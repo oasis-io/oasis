@@ -27,7 +27,7 @@ func init() {
 }
 
 func InitLogger(filePath string) {
-	std.SetOutput(NewRotateFile(filePath, "/oasis.log", 1024 /*1GB*/))
+	std.SetOutput(NewRotateFile(filePath, "./oasis.log", 1024 /*1GB*/))
 }
 
 func ExitLogger() {
