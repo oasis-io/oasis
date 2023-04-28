@@ -1,0 +1,12 @@
+# oasis 全局配置
+global:
+  port: '9590'
+  log_path: './oasis.log'
+
+# oasis mysql 存储配置
+db_config:
+  host: '127.0.0.1'
+  port: '3306'
+  user: 'oasis'
+  password: 'eQWJjZGV1A(MjAxOQo'
+  database: 'oasis'
