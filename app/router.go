@@ -52,7 +52,6 @@ func HttpRequests() {
 		v1Router.PATCH("/user/group", v1.UpdateUserGroup)
 		v1Router.POST("/user/group/add", v1.CreateUserGroup)
 		v1Router.POST("/user/group/list", v1.GetUserGroupList)
-
 	}
 
 	r.Run(":9590")
