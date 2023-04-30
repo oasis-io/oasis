@@ -5,7 +5,6 @@ import (
 	"net/http"
 	v1 "oasis/api/v1"
 	"oasis/middleware"
-	"oasis/pkg/logs"
 )
 
 func HttpRequests() {
@@ -56,6 +55,5 @@ func HttpRequests() {
 
 	}
 
-	logs.Logger().Info("Run Oasis Server, Port: 9590")
 	r.Run(":9590")
 }
