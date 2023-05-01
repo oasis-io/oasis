@@ -1,0 +1,13 @@
+[server]
+port = "9590"
+log_error = "./oasis.log"
+
+
+[mysql]
+user = "oasis"
+host = "127.0.0.1"
+port = "3306"
+password = "eQWJjZGV1A(MjAxOQo"
+database = "oasis"
+
+

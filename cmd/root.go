@@ -45,7 +45,7 @@ func initConfig() {
 		//viper.AddConfigPath(home)
 
 		viper.AddConfigPath("./")
-		viper.SetConfigType("yaml")
+		viper.SetConfigType("toml")
 		viper.SetConfigName("oasis")
 	}
 
