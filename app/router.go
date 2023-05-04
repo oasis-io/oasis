@@ -3,20 +3,24 @@ package app
 import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
+	"io"
 	"net/http"
 	v1 "oasis/api/v1"
 	"oasis/config"
 	"oasis/middleware"
 	"oasis/pkg/log"
+	"os"
 )
 
 func HttpRequests() {
 	gin.DisableConsoleColor()
-	//f, _ := os.Create("gin.log")
+
+	accessLog := config.NewConfig().Server.LogAccess
+	f, _ := os.Create(accessLog)
 	//gin.DefaultWriter = io.MultiWriter(f)
 
 	// 如果需要同时将日志写入文件和控制台，请使用以下代码。
-	// gin.DefaultWriter = io.MultiWriter(f, os.Stdout)
+	gin.DefaultWriter = io.MultiWriter(f, os.Stdout)
 
 	r := gin.Default()
 	r.Use(middleware.Cors())

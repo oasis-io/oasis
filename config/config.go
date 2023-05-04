@@ -20,9 +20,10 @@ type Config struct {
 }
 
 type Server struct {
-	Port string
-	Log  string `toml:"log_error"`
-	Bind string
+	Port      string
+	LogError  string `toml:"error_log"`
+	LogAccess string `toml:"access_log"`
+	Bind      string
 }
 
 type MySQLConfig struct {
@@ -38,9 +39,10 @@ type MySQLConfig struct {
 func NewConfig() *Config {
 	return &Config{
 		Server: Server{
-			Port: viper.GetString("server.port"),
-			Log:  viper.GetString("server.log_error"),
-			Bind: viper.GetString("server.bind"),
+			Port:      viper.GetString("server.port"),
+			LogError:  viper.GetString("server.error_log"),
+			LogAccess: viper.GetString("server.access_log"),
+			Bind:      viper.GetString("server.bind"),
 		},
 		MySQL: MySQLConfig{
 			User:         viper.GetString("mysql.user"),

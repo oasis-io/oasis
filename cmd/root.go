@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"go.uber.org/zap"
 	"oasis/pkg/log"
 )
 
@@ -36,7 +37,6 @@ func init() {
 }
 
 func initConfig() {
-	log.Info("Initializing Oasis configuration file")
 
 	if cfgFile != "" {
 		// Use config file from the flag.
@@ -54,13 +54,15 @@ func initConfig() {
 		// server default value
 		viper.SetDefault("server.bind", "127.0.0.1")
 		viper.SetDefault("server.port", "9590")
-		viper.SetDefault("server.log_error", "./oasis.log")
+		viper.SetDefault("server.error_log", "./oasis.log")
+		viper.SetDefault("server.access_log", "./access.log")
 
 	}
 
 	if err := viper.ReadInConfig(); err != nil {
 		panic(fmt.Errorf("Fatal error config file: %s \n", err))
+	} else {
+		log.Info("Initializing config file")
+		log.Info("Using config file", zap.String("file", viper.ConfigFileUsed()))
 	}
-
-	// fmt.Println("Using config file:", viper.ConfigFileUsed())
 }
