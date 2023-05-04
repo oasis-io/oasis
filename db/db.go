@@ -5,20 +5,21 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"oasis/config"
-	"sync"
 )
 
-var mutex sync.Mutex
-var mysqlURI string
+func initOasisDB() error {
+	config := config.NewConfig()
+	query := fmt.Sprintf("CREATE DATABASE IF NOT EXISTS %s", config.MySQL.Database)
 
-//func getMySQLURI() string {
-//	mutex.Lock()
-//	defer mutex.Unlock()
-//	if mysqlURI != "" {
-//		return mysqlURI
-//	}
-//
-//}
+	db, err := openOasis()
+	if err != nil {
+		return err
+	}
+
+	db.Exec(query)
+
+	return nil
+}
 
 func OpenOasis() (db *gorm.DB, err error) {
 	return openOasis()

@@ -4,6 +4,7 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
+	"os"
 	"path"
 	"runtime"
 	"time"
@@ -18,14 +19,24 @@ func init() {
 	}
 	encoder := zapcore.NewJSONEncoder(encoderConfig)
 
-	fileWriteSyncer := getFileLogWriter()
-	core := zapcore.NewCore(encoder, fileWriteSyncer, zapcore.DebugLevel)
+	//fileWriteSyncer := getFileLogWriter()
+	//file, _ := os.OpenFile("./oasis.log", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 644)
+	//fileWriteSyncer := zapcore.AddSync(file)
+	fileWriteSyncer := os.Stdout
+	//Level := zapcore.ErrorLevel // zapcore.DebugLevel
+	//
+	//zapcore.LevelOf(ErrorLevel)
+	levelEnabler := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool {
+		return lvl >= zapcore.InfoLevel // zapcore.DebugLevel
+	})
+
+	core := zapcore.NewCore(encoder, fileWriteSyncer, levelEnabler)
 
 	logger = zap.New(core)
 }
 
-func getFileLogWriter() (writeSyncer zapcore.WriteSyncer) {
-	// 使用 lumberjack 实现 log rotate
+func DefaultLogWriter() (writeSyncer zapcore.WriteSyncer) {
+	// 日志切割
 	lumberJackLogger := &lumberjack.Logger{
 		Filename:   "./oasis.log",
 		MaxSize:    100, // 单个文件最大100M
@@ -49,8 +60,7 @@ func getCallerInfoForLog() (callerFields []zap.Field) {
 }
 
 func Info(message string, fields ...zap.Field) {
-	callerFields := getCallerInfoForLog()
-	fields = append(fields, callerFields...)
+	fields = append(fields)
 	logger.Info(message, fields...)
 }
 

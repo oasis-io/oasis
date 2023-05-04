@@ -1,7 +1,7 @@
 [server]
+bind = "127.0.0.1"
 port = "9590"
 log_error = "./oasis.log"
-
 
 [mysql]
 user = "oasis"

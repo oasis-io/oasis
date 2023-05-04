@@ -2,18 +2,28 @@ package app
 
 import (
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 	"net/http"
 	v1 "oasis/api/v1"
+	"oasis/config"
 	"oasis/middleware"
+	"oasis/pkg/log"
 )
 
 func HttpRequests() {
+	gin.DisableConsoleColor()
+	//f, _ := os.Create("gin.log")
+	//gin.DefaultWriter = io.MultiWriter(f)
+
+	// 如果需要同时将日志写入文件和控制台，请使用以下代码。
+	// gin.DefaultWriter = io.MultiWriter(f, os.Stdout)
+
 	r := gin.Default()
 	r.Use(middleware.Cors())
 
 	r.GET("/health", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
-			"message": "alive",
+			"message": "ok",
 		})
 	})
 
@@ -54,5 +64,10 @@ func HttpRequests() {
 		v1Router.POST("/user/group/list", v1.GetUserGroupList)
 	}
 
-	r.Run(":9590")
+	bind := config.NewConfig().Server.Bind
+	port := config.NewConfig().Server.Port
+	address := bind + ":" + port
+
+	log.Info("Start HTTP listener", zap.String("address", address))
+	r.Run(address)
 }

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"oasis/pkg/log"
 )
 
 var (
@@ -35,6 +36,8 @@ func init() {
 }
 
 func initConfig() {
+	log.Info("Initializing Oasis configuration file")
+
 	if cfgFile != "" {
 		// Use config file from the flag.
 		viper.SetConfigFile(cfgFile)
@@ -44,16 +47,20 @@ func initConfig() {
 		//cobra.CheckErr(err)
 		//viper.AddConfigPath(home)
 
-		viper.AddConfigPath("./")
+		viper.AddConfigPath(".")
 		viper.SetConfigType("toml")
 		viper.SetConfigName("oasis")
+
+		// server default value
+		viper.SetDefault("server.bind", "127.0.0.1")
+		viper.SetDefault("server.port", "9590")
+		viper.SetDefault("server.log_error", "./oasis.log")
+
 	}
 
-	//viper.AutomaticEnv()
-
-	if err := viper.ReadInConfig(); err == nil {
-		fmt.Println("Using config file:", viper.ConfigFileUsed())
-	} else {
+	if err := viper.ReadInConfig(); err != nil {
 		panic(fmt.Errorf("Fatal error config file: %s \n", err))
 	}
+
+	// fmt.Println("Using config file:", viper.ConfigFileUsed())
 }
