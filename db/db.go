@@ -7,26 +7,11 @@ import (
 	"oasis/config"
 )
 
-func initOasisDB() error {
-	config := config.NewConfig()
-	query := fmt.Sprintf("CREATE DATABASE IF NOT EXISTS %s", config.MySQL.Database)
-
-	db, err := openOasis()
-	if err != nil {
-		return err
-	}
-
-	db.Exec(query)
-
-	return nil
-}
-
 func OpenOasis() (db *gorm.DB, err error) {
 	return openOasis()
 }
 
 func openOasis() (db *gorm.DB, err error) {
-
 	config := config.NewConfig()
 	user := config.MySQL.User
 	password := config.MySQL.Password
@@ -56,6 +41,7 @@ func openOasis() (db *gorm.DB, err error) {
 	maxIdle := config.MySQL.MaxIdleConns
 	DB.SetMaxOpenConns(maxOpen)
 	DB.SetMaxIdleConns(maxIdle)
+
 	if err := DB.Ping(); err != nil {
 		return nil, err
 	}

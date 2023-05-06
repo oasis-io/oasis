@@ -9,6 +9,8 @@ const (
 	ERROR       = 404
 	SUCCESS     = 200
 	ParamsError = 1002 // 参数错误
+	TokenError  = 1003
+	SQLError    = 1004
 )
 
 type Response struct {
