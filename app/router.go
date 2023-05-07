@@ -35,8 +35,11 @@ func HttpRequests() {
 
 	// 登陆后拿到token才能访问
 	v1Router := r.Group("v1")
-	v1Router.Use(middleware.JWTAuth())
+	v1Router.Use(middleware.JWTAuth()).Use(middleware.CasbinAuth())
 	{
+		// Menu
+		v1Router.POST("/menu/getMenu", v1.GetMenu)
+
 		// Instance
 		v1Router.POST("/instance", v1.GetInstance)
 		v1Router.DELETE("/instance", v1.DeleteInstance)

@@ -6,11 +6,8 @@ import (
 )
 
 const (
-	ERROR       = 404
-	SUCCESS     = 200
-	ParamsError = 1002 // 参数错误
-	TokenError  = 1003
-	SQLError    = 1004
+	SUCCESS = 1000
+	ERROR   = 1001
 )
 
 type Response struct {
@@ -29,10 +26,14 @@ func responseJSON(c *gin.Context, httpCode int, code int, message string, data i
 	c.JSON(httpCode, response)
 }
 
-func Success(c *gin.Context, message string, data interface{}) {
+func Success(c *gin.Context) {
+	responseJSON(c, http.StatusOK, SUCCESS, "successful", map[string]interface{}{})
+}
+
+func SendSuccessData(c *gin.Context, message string, data interface{}) {
 	responseJSON(c, http.StatusOK, SUCCESS, message, data)
 }
 
-func Error(c *gin.Context, code int, message string) {
-	responseJSON(c, http.StatusBadRequest, code, message, map[string]interface{}{})
+func Error(c *gin.Context, message string) {
+	responseJSON(c, http.StatusBadRequest, ERROR, message, map[string]interface{}{})
 }

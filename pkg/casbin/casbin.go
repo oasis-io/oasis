@@ -1,0 +1,93 @@
+package casbin
+
+import (
+	"github.com/casbin/casbin/v2"
+	"github.com/casbin/casbin/v2/model"
+	gormadapter "github.com/casbin/gorm-adapter/v3"
+	"oasis/config"
+	"oasis/pkg/log"
+	"sync"
+)
+
+var (
+	cachedEnforcer *casbin.CachedEnforcer
+	once           sync.Once
+)
+
+func Casbin() *casbin.CachedEnforcer {
+	once.Do(func() {
+		db := config.DB
+		a, err := gormadapter.NewAdapterByDB(db)
+		if err != nil {
+			log.Error(err.Error())
+			return
+		}
+
+		rbac := config.RBAC
+		m, err := model.NewModelFromString(rbac)
+		if err != nil {
+			log.Error(err.Error())
+			return
+		}
+
+		cachedEnforcer, err = casbin.NewCachedEnforcer(m, a)
+		if err != nil {
+			log.Error(err.Error())
+			return
+		}
+		cachedEnforcer.SetExpireTime(60 * 60)
+		err = cachedEnforcer.LoadPolicy()
+		if err != nil {
+			log.Error(err.Error())
+			return
+		}
+	})
+	return cachedEnforcer
+}
+
+func InitCasbinRule() error {
+
+	db := config.DB
+	_, err := gormadapter.NewAdapterByDB(db)
+	if err != nil {
+		return err
+	}
+
+	table := []gormadapter.CasbinRule{
+		// User List
+		{Ptype: "p", V0: "admin", V1: "/v1/user", V2: "POST"},
+		{Ptype: "p", V0: "admin", V1: "/v1/user", V2: "DELETE"},
+		{Ptype: "p", V0: "admin", V1: "/v1/user", V2: "PATCH"},
+		{Ptype: "p", V0: "admin", V1: "/v1/user/add", V2: "POST"},
+		{Ptype: "p", V0: "admin", V1: "/v1/user/list", V2: "POST"},
+		{Ptype: "p", V0: "admin", V1: "/v1/user/info", V2: "GET"},
+
+		// User Role
+		{Ptype: "p", V0: "admin", V1: "/v1/user/role", V2: "POST"},
+		{Ptype: "p", V0: "admin", V1: "/v1/user/role", V2: "DELETE"},
+		{Ptype: "p", V0: "admin", V1: "/v1/user/role", V2: "PATCH"},
+		{Ptype: "p", V0: "admin", V1: "/v1/user/role/add", V2: "POST"},
+		{Ptype: "p", V0: "admin", V1: "/v1/user/role/list", V2: "POST"},
+
+		// User Group
+		{Ptype: "p", V0: "admin", V1: "/v1/user/group", V2: "POST"},
+		{Ptype: "p", V0: "admin", V1: "/v1/user/group", V2: "DELETE"},
+		{Ptype: "p", V0: "admin", V1: "/v1/user/group", V2: "PATCH"},
+		{Ptype: "p", V0: "admin", V1: "/v1/user/group/add", V2: "POST"},
+		{Ptype: "p", V0: "admin", V1: "/v1/user/group/list", V2: "POST"},
+
+		// Instance
+		{Ptype: "p", V0: "admin", V1: "/v1/instance", V2: "POST"},
+		{Ptype: "p", V0: "admin", V1: "/v1/instance", V2: "DELETE"},
+		{Ptype: "p", V0: "admin", V1: "/v1/instance", V2: "PATCH"},
+		{Ptype: "p", V0: "admin", V1: "/v1/instance/list", V2: "POST"},
+		{Ptype: "p", V0: "admin", V1: "/v1/instance/add", V2: "POST"},
+		{Ptype: "p", V0: "admin", V1: "/v1/instance/ping", V2: "POST"},
+	}
+
+	if err := db.Create(&table).Error; err != nil {
+		return err
+	}
+
+	return nil
+}

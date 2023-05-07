@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"github.com/gin-gonic/gin"
+	"oasis/app/response"
 	"oasis/pkg/utils"
 )
 
@@ -11,9 +12,7 @@ func JWTAuth() gin.HandlerFunc {
 
 		// 请求头没有token就提示
 		if token == "" {
-			c.JSON(400, gin.H{
-				"message": "not login!",
-			})
+			response.Error(c, "No login")
 			c.Abort()
 		}
 
@@ -21,9 +20,7 @@ func JWTAuth() gin.HandlerFunc {
 		j := utils.NewJWT()
 		claims, err := j.ParseToken(token)
 		if err != nil {
-			c.JSON(405, gin.H{
-				"message": "token expired！",
-			})
+			response.Error(c, err.Error())
 			c.Abort()
 		}
 

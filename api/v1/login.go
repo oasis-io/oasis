@@ -19,7 +19,7 @@ func Login(c *gin.Context) {
 	var req request.Login
 
 	if err := c.ShouldBindJSON(&req); err != nil {
-		response.Error(c, response.ParamsError, err.Error())
+		response.Error(c, err.Error())
 		return
 	}
 
@@ -28,16 +28,16 @@ func Login(c *gin.Context) {
 	user := model.User{}
 	err := db.Where("username = ? AND password = ?", req.Username, req.Password).Find(&user).Error
 	if err != nil {
-		response.Error(c, response.SQLError, err.Error())
+		response.Error(c, err.Error())
 	}
 
 	j := utils.NewJWT()
 	token, err := j.CreateToken(req.Username)
 	if err != nil {
-		response.Error(c, response.TokenError, err.Error())
+		response.Error(c, err.Error())
 	}
 
-	response.Success(c, "登录成功", LoginResponse{
+	response.SendSuccessData(c, "Login successful", LoginResponse{
 		User:  user,
 		Token: token,
 	})

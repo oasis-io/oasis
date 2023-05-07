@@ -3,6 +3,7 @@ package db
 import (
 	"oasis/config"
 	"oasis/db/model"
+	"oasis/pkg/log"
 	"sync"
 )
 
@@ -23,5 +24,6 @@ func AutoMigrate() {
 		if err != nil {
 			panic(err)
 		}
+		log.Info("migrate table success")
 	})
 }
