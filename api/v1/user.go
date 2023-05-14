@@ -4,6 +4,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func GetUserInfo(c *gin.Context) {
+	c.JSON(200, gin.H{
+		"status": "OK",
+	})
+}
+
 func GetUserList(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"status": "OK",

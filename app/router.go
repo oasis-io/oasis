@@ -3,24 +3,22 @@ package app
 import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
-	"io"
 	"net/http"
 	v1 "oasis/api/v1"
 	"oasis/config"
 	"oasis/middleware"
 	"oasis/pkg/log"
-	"os"
 )
 
 func HttpRequests() {
-	gin.DisableConsoleColor()
+	//gin.DisableConsoleColor()
 
-	accessLog := config.NewConfig().Server.LogAccess
-	f, _ := os.Create(accessLog)
+	//accessLog := config.NewConfig().Server.LogAccess
+	//f, _ := os.Create(accessLog)
 	//gin.DefaultWriter = io.MultiWriter(f)
 
 	// 如果需要同时将日志写入文件和控制台，请使用以下代码。
-	gin.DefaultWriter = io.MultiWriter(f, os.Stdout)
+	//gin.DefaultWriter = io.MultiWriter(f, os.Stdout)
 
 	r := gin.Default()
 	r.Use(middleware.Cors())
@@ -38,7 +36,7 @@ func HttpRequests() {
 	v1Router.Use(middleware.JWTAuth()).Use(middleware.CasbinAuth())
 	{
 		// Menu
-		v1Router.POST("/menu/getMenu", v1.GetMenu)
+		v1Router.POST("/menu", v1.GetMenu)
 
 		// Instance
 		v1Router.POST("/instance", v1.GetInstance)
@@ -54,7 +52,7 @@ func HttpRequests() {
 		v1Router.PATCH("/user", v1.UpdateUser)
 		v1Router.POST("/user/add", v1.CreateUser)
 		v1Router.POST("/user/list", v1.GetUserList)
-		//v1Router.GET("/user/info", v1.GetUserInfo)
+		v1Router.GET("/user/info", v1.GetUserInfo)
 
 		// User Role
 		v1Router.POST("/user/role", v1.GetRole)

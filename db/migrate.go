@@ -20,6 +20,7 @@ func AutoMigrate() {
 			&model.UserRole{},
 			&model.UserGroup{},
 			&model.Menu{},
+			&model.RoleMenuRelation{},
 		)
 		if err != nil {
 			panic(err)

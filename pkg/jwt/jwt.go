@@ -1,4 +1,4 @@
-package utils
+package jwt
 
 import (
 	"github.com/golang-jwt/jwt/v5"
@@ -13,11 +13,16 @@ var (
 	mySigningKey = []byte("woshishui")
 )
 
-// OasisClaims 自定义载荷
+// OasisClaims 自定义
 type OasisClaims struct {
-	Username   string `json:"username"`
+	CustomClaims
 	BufferTime int64
 	jwt.RegisteredClaims
+}
+
+type CustomClaims struct {
+	Username string
+	Roles    []string
 }
 
 func NewJWT() *JWT {
@@ -27,22 +32,22 @@ func NewJWT() *JWT {
 }
 
 // NewOasisClaims 结构体实例化
-func NewOasisClaims(name string) *OasisClaims {
+func NewOasisClaims(claims CustomClaims) *OasisClaims {
 	return &OasisClaims{
-		Username: name,
+		CustomClaims: claims,
 		RegisteredClaims: jwt.RegisteredClaims{
 			Issuer:    "zhangshaodong",
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
 			NotBefore: jwt.NewNumericDate(time.Now()),
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 4)), // 测试用
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 24)), // 测试用
 		},
 	}
 }
 
 // CreateToken 创建一个token
-func (j *JWT) CreateToken(name string) (string, error) {
+func (j *JWT) CreateToken(claims CustomClaims) (string, error) {
 	// 使用指定的签名方法和声明创建一个新的Token, 加密方式后期替换
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, NewOasisClaims(name))
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, NewOasisClaims(claims))
 	// 加密key
 	ss, err := token.SignedString(mySigningKey)
 	return ss, err

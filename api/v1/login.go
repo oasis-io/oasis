@@ -2,11 +2,13 @@ package v1
 
 import (
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 	"oasis/app/request"
 	"oasis/app/response"
 	"oasis/config"
 	"oasis/db/model"
-	"oasis/pkg/utils"
+	"oasis/pkg/jwt"
+	"oasis/pkg/log"
 )
 
 type LoginResponse struct {
@@ -26,13 +28,24 @@ func Login(c *gin.Context) {
 	db := config.DB
 
 	user := model.User{}
-	err := db.Where("username = ? AND password = ?", req.Username, req.Password).Find(&user).Error
-	if err != nil {
+	if err := db.Where("username = ? AND password = ?", req.Username, req.Password).Preload("Roles").First(&user).Error; err != nil {
+		log.Error("获取用户角色错误", zap.Error(err))
 		response.Error(c, err.Error())
 	}
 
-	j := utils.NewJWT()
-	token, err := j.CreateToken(req.Username)
+	// 转换 user.Roles 为 []string 类型
+	roleNames := make([]string, len(user.Roles))
+	for i, role := range user.Roles {
+		roleNames[i] = role.Name
+	}
+
+	claims := jwt.CustomClaims{
+		Username: user.Username,
+		Roles:    roleNames,
+	}
+
+	j := jwt.NewJWT()
+	token, err := j.CreateToken(claims)
 	if err != nil {
 		response.Error(c, err.Error())
 	}

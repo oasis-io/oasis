@@ -3,7 +3,7 @@ package middleware
 import (
 	"github.com/gin-gonic/gin"
 	"oasis/app/response"
-	"oasis/pkg/utils"
+	"oasis/pkg/jwt"
 )
 
 func JWTAuth() gin.HandlerFunc {
@@ -17,7 +17,7 @@ func JWTAuth() gin.HandlerFunc {
 		}
 
 		// 解析token
-		j := utils.NewJWT()
+		j := jwt.NewJWT()
 		claims, err := j.ParseToken(token)
 		if err != nil {
 			response.Error(c, err.Error())

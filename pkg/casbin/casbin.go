@@ -54,6 +54,9 @@ func InitCasbinRule() error {
 	}
 
 	table := []gormadapter.CasbinRule{
+		// Menu
+		{Ptype: "p", V0: "admin", V1: "/v1/menu", V2: "POST"},
+
 		// User List
 		{Ptype: "p", V0: "admin", V1: "/v1/user", V2: "POST"},
 		{Ptype: "p", V0: "admin", V1: "/v1/user", V2: "DELETE"},
@@ -83,6 +86,12 @@ func InitCasbinRule() error {
 		{Ptype: "p", V0: "admin", V1: "/v1/instance/list", V2: "POST"},
 		{Ptype: "p", V0: "admin", V1: "/v1/instance/add", V2: "POST"},
 		{Ptype: "p", V0: "admin", V1: "/v1/instance/ping", V2: "POST"},
+	}
+
+	var count int64
+	db.Model(&gormadapter.CasbinRule{}).Count(&count)
+	if count > 0 {
+		return nil
 	}
 
 	if err := db.Create(&table).Error; err != nil {

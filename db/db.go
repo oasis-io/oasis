@@ -5,6 +5,7 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"oasis/config"
+	"oasis/db/model"
 )
 
 func OpenOasis() (db *gorm.DB, err error) {
@@ -55,4 +56,30 @@ func OpenInstance() (db *gorm.DB, err error) {
 
 func openInstance() (db *gorm.DB, err error) {
 	return db, err
+}
+
+func GetMenuTree() ([]model.Menu, error) {
+	var menus []model.Menu
+	// 获取所有的菜单项
+	db := config.DB
+	if err := db.Find(&menus).Error; err != nil {
+		return nil, err
+	}
+
+	// 构建菜单树
+	return buildMenuTree(menus, "0"), nil
+}
+
+func buildMenuTree(menus []model.Menu, parentId string) []model.Menu {
+	var result []model.Menu
+	for _, menu := range menus {
+		// 将 menu.ID 转换为 string 来比较
+		if menu.ParentID == parentId {
+			children := buildMenuTree(menus, fmt.Sprintf("%d", menu.ID))
+			menu.Children = children
+			result = append(result, menu)
+		}
+	}
+
+	return result
 }
