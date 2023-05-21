@@ -31,6 +31,7 @@ func Login(c *gin.Context) {
 	if err := db.Where("username = ? AND password = ?", req.Username, req.Password).Preload("Roles").First(&user).Error; err != nil {
 		log.Error("获取用户角色错误", zap.Error(err))
 		response.Error(c, err.Error())
+		return
 	}
 
 	// 转换 user.Roles 为 []string 类型
@@ -48,6 +49,7 @@ func Login(c *gin.Context) {
 	token, err := j.CreateToken(claims)
 	if err != nil {
 		response.Error(c, err.Error())
+		return
 	}
 
 	response.SendSuccessData(c, "Login successful", LoginResponse{

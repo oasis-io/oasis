@@ -6,8 +6,9 @@ import (
 )
 
 const (
-	SUCCESS = 1000
-	ERROR   = 1001
+	SUCCESS      = 1000
+	ERROR        = 1001
+	TokenExpired = 1002
 )
 
 type Response struct {
@@ -36,4 +37,8 @@ func SendSuccessData(c *gin.Context, message string, data interface{}) {
 
 func Error(c *gin.Context, message string) {
 	responseJSON(c, http.StatusBadRequest, ERROR, message, map[string]interface{}{})
+}
+
+func SendErrorData(c *gin.Context, code int, message string) {
+	responseJSON(c, http.StatusBadRequest, code, message, map[string]interface{}{})
 }

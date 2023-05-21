@@ -55,7 +55,8 @@ func initConfig() {
 		viper.SetDefault("server.bind", "127.0.0.1")
 		viper.SetDefault("server.port", "9590")
 		viper.SetDefault("server.error_log", "./oasis.log")
-		viper.SetDefault("server.access_log", "./access.log")
+		viper.SetDefault("server.access_log", "off")
+		viper.SetDefault("server.access_log_path", "./access.log")
 
 	}
 

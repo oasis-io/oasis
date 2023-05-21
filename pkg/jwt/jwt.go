@@ -39,7 +39,7 @@ func NewOasisClaims(claims CustomClaims) *OasisClaims {
 			Issuer:    "zhangshaodong",
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
 			NotBefore: jwt.NewNumericDate(time.Now()),
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 24)), // 测试用
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 4)), // token expired
 		},
 	}
 }

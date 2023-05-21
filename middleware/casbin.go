@@ -4,11 +4,12 @@ import (
 	"github.com/gin-gonic/gin"
 	"oasis/app/response"
 	"oasis/pkg/casbin"
+	"oasis/pkg/utils"
 )
 
 func CasbinAuth() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		username := "admin"
+		username := utils.GetTokenUserName(c)
 		sub := username           // 想要访问资源的用户。
 		obj := c.Request.URL.Path // 将被访问的资源。
 		act := c.Request.Method   // 用户对资源执行的操作。

@@ -38,8 +38,8 @@ func openOasis() (db *gorm.DB, err error) {
 		return nil, err
 	}
 
-	maxOpen := config.MySQL.MaxOpenConns
-	maxIdle := config.MySQL.MaxIdleConns
+	maxOpen := config.MySQL.MaxOpenConn
+	maxIdle := config.MySQL.MaxIdleConn
 	DB.SetMaxOpenConns(maxOpen)
 	DB.SetMaxIdleConns(maxIdle)
 
