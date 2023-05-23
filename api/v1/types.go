@@ -24,3 +24,7 @@ type UserRes struct {
 	Phone    string `json:"phone"`
 	Password string `json:"password"`
 }
+
+type RoleResponse struct {
+	Name string `json:"name"`
+}

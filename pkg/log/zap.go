@@ -60,7 +60,8 @@ func getCallerInfoForLog() (callerFields []zap.Field) {
 }
 
 func Info(message string, fields ...zap.Field) {
-	fields = append(fields)
+	callerFields := getCallerInfoForLog()
+	fields = append(fields, callerFields...)
 	logger.Info(message, fields...)
 }
 

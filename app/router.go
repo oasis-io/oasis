@@ -55,6 +55,7 @@ func HttpRequests() {
 		v1Router.GET("/user/info", v1.GetUserInfo)
 
 		// User Role
+		v1Router.GET("/user/role", v1.GetRoles)
 		v1Router.POST("/user/role", v1.GetRole)
 		v1Router.DELETE("/user/role", v1.DeleteRole)
 		v1Router.PATCH("/user/role", v1.UpdateRole)

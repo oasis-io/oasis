@@ -5,6 +5,7 @@ import (
 	"oasis/app/response"
 	"oasis/config"
 	"oasis/db/model"
+	"oasis/pkg/log"
 	"oasis/pkg/utils"
 )
 
@@ -106,11 +107,27 @@ func GetUser(c *gin.Context) {
 }
 
 func CreateUser(c *gin.Context) {
-	var req model.User
+	var req struct {
+		model.User
+		RoleNames []string `json:"roles"`
+	}
 
 	if err := c.ShouldBindJSON(&req); err != nil {
 		response.Error(c, err.Error())
 		return
+	}
+
+	var roles []*model.UserRole
+
+	if len(req.RoleNames) != 0 {
+		for _, roleName := range req.RoleNames {
+			role, err := new(model.UserRole).FindByName(roleName)
+			if err != nil {
+				response.Error(c, "Role not found: "+roleName)
+				return
+			}
+			roles = append(roles, role)
+		}
 	}
 
 	user := model.User{
@@ -118,13 +135,14 @@ func CreateUser(c *gin.Context) {
 		Password: req.Password,
 		Email:    req.Email,
 		Phone:    req.Phone,
+		Roles:    roles,
 	}
 
-	db := config.DB
-
-	result := db.Save(&user)
-	if result.Error != nil {
-		response.Error(c, result.Error.Error())
+	err := user.CreateUser()
+	if err != nil {
+		log.Error(err.Error())
+		response.Error(c, err.Error())
+		return
 	}
 
 	response.Success(c)
@@ -161,22 +179,20 @@ func UpdateUser(c *gin.Context) {
 
 func DeleteUser(c *gin.Context) {
 	var req model.User
-	var user []model.User
-	var count int64
 
 	if err := c.ShouldBindJSON(&req); err != nil {
 		response.Error(c, err.Error())
 		return
 	}
 
-	name := req.Username
-
-	db := config.DB
-
-	db.Where("username = ?", name).Delete(&user).Count(&count)
-	if len(user) <= 0 {
-		response.Success(c)
-	} else {
-		response.Error(c, "User delete fail!")
+	user := model.User{
+		Username: req.Username,
 	}
+
+	err := user.DeleteUser()
+	if err != nil {
+		response.Error(c, err.Error())
+	}
+
+	response.Success(c)
 }

@@ -5,20 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="771fb103-1b86-47b3-932e-a6713078e0ea" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/api/v1/types.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/data.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/v1/login.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/v1/login.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/v1/types.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/v1/types.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/v1/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/v1/user.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/response/response.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/response/response.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/root.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/root.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/db.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/db.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/middleware/casbin.go" beforeDir="false" afterPath="$PROJECT_DIR$/middleware/casbin.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/middleware/jwt.go" beforeDir="false" afterPath="$PROJECT_DIR$/middleware/jwt.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/oasis.toml" beforeDir="false" afterPath="$PROJECT_DIR$/oasis.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/jwt/jwt.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/jwt/jwt.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/utils/token.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/utils/token.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/v1/user_role.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/v1/user_role.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/router.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/model/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/model/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/model/user_role.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/model/user_role.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/log/zap.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/log/zap.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,7 +53,7 @@
     "WebServerToolWindowFactoryState": "false",
     "go.import.settings.migrated": "true",
     "go.sdk.automatically.set": "true",
-    "last_opened_file_path": "/home/oasis/projects/github.com/oasis-io/oasis",
+    "last_opened_file_path": "/home/oasis/projects/github.com/zhangshaodong/go-demo",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)"
   }
@@ -72,6 +66,22 @@
       <recent name="$PROJECT_DIR$/pkg" />
       <recent name="$PROJECT_DIR$/pkg/utils" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="go build user.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="oasis" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="FILE" />
+      <package value="oasis" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/api/v1/user.go" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Go Build.go build user.go" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TypeScriptGeneratedFilesManager">
