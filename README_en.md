@@ -27,6 +27,6 @@ CREATE USER  'oasis'@'%' IDENTIFIED BY 'eQWJjZGV1A(MjAxOQo';
 GRANT ALL PRIVILEGES ON oasis.* TO 'oasis'@'%' ; 
 FLUSH PRIVILEGES;
 
-nohup ./oasis -c oasis.yaml &
+nohup ./oasis -c oasis.toml &
 ```
 

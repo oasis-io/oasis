@@ -31,6 +31,6 @@ GRANT ALL PRIVILEGES ON oasis.* TO 'oasis'@'%' ;
 FLUSH PRIVILEGES;
 
 启动
-nohup ./oasis -c oasis.yaml &
+nohup ./oasis -c oasis.toml &
 ```
 
