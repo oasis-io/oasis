@@ -15,7 +15,10 @@ func GetUserInfo(c *gin.Context) {
 
 	db := config.DB
 
-	name := utils.GetTokenUserName(c)
+	name, err := utils.GetTokenUserName(c)
+	if err != nil {
+		response.Error(c, "解析token错误")
+	}
 
 	db.Where("username = ? ", name).Find(&user).Count(&count)
 	if count == 0 {

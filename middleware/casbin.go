@@ -9,7 +9,10 @@ import (
 
 func CasbinAuth() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		username := utils.GetTokenUserName(c)
+		username, err := utils.GetTokenUserName(c)
+		if err != nil {
+			response.Error(c, "解析token错误")
+		}
 
 		if username == "admin" {
 			c.Next()
