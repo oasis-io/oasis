@@ -3,12 +3,12 @@
 English | [简体中文](./README.md)
 
 
-## build
+### build
 bash scripts/build.sh
 
 
-## Install
-
+### Install
+```bash
 CREATE DATABASE IF NOT EXISTS oasis default character set utf8mb4;
 
 CREATE USER  'oasis'@'%' IDENTIFIED BY 'eQWJjZGV1A(MjAxOQo';
@@ -17,5 +17,5 @@ FLUSH PRIVILEGES;
 
 Start
 nohup ./oasis -c config.yaml &
-
+```
 
