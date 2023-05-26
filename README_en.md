@@ -6,11 +6,10 @@ English | [简体中文](./README.md)
 
 ### Introduction
 
-    Encapsulate Operator and deploy and maintain database instances based on Kubernetes.It provides the following features:
+  Deploy and maintain database instances based on Kubernetes. It provides the following functions:
 
-* Kubernetes 部署MySQL
-* SQL Query
-* SQL Audit
+* Kubernetes deploy MySQL
+* SQL Audit and SQL Query
 * Data migration
 * Database instance management
 

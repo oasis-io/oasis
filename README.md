@@ -5,11 +5,11 @@
 简体中文 | [English](./README_en.md)
 
 ### 介绍
-    封装Operator, 基于Kubernetes来部署和维护数据库实例。它提供一下功能：
 
-* Kubernetes deploy MySQL
-* SQL 查询
-* SQL 审核
+  基于Kubernetes 来部署和维护数据库实例。它提供以下功能：
+
+* Kubernetes 部署MySQL
+* SQL 审核和查询
 * 数据迁移
 * 数据库实例管理
 
