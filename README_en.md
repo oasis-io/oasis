@@ -1,13 +1,26 @@
 # oasis
 
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/carina-io/carina/blob/main/LICENSE)
+
 English | [简体中文](./README.md)
 
+### Introduction
+
+    Encapsulate Operator and deploy and maintain database instances based on Kubernetes.It provides the following features:
+
+* Kubernetes 部署MySQL
+* SQL Query
+* SQL Audit
+* Data migration
+* Database instance management
 
 ### build
+
 bash scripts/build.sh
 
 
 ### Install
+
 ```bash
 CREATE DATABASE IF NOT EXISTS oasis default character set utf8mb4;
 
@@ -15,7 +28,6 @@ CREATE USER  'oasis'@'%' IDENTIFIED BY 'eQWJjZGV1A(MjAxOQo';
 GRANT ALL PRIVILEGES ON oasis.* TO 'oasis'@'%' ; 
 FLUSH PRIVILEGES;
 
-Start
-nohup ./oasis -c config.yaml &
+nohup ./oasis -c oasis.yaml &
 ```
 
