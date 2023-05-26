@@ -1,6 +1,6 @@
 # oasis
 
-English | [简体中文](./README_en.md)
+English | [简体中文](./README.md)
 
 
 ## build
