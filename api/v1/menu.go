@@ -14,6 +14,10 @@ type MenuResponse struct {
 }
 
 func GetMenu(c *gin.Context) {
+	//username, err := utils.GetTokenUserName(c)
+	//if err != nil {
+	//	response.Error(c, "解析token错误")
+	//}
 
 	menus, err := db.GetMenuTree()
 	if err != nil {
