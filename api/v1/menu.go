@@ -14,6 +14,7 @@ type MenuResponse struct {
 }
 
 func GetMenu(c *gin.Context) {
+
 	menus, err := db.GetMenuTree()
 	if err != nil {
 		log.Error("获取菜单失败!", zap.Error(err))

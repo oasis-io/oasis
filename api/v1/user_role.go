@@ -109,11 +109,15 @@ func DeleteRole(c *gin.Context) {
 		return
 	}
 
-	role := model.UserRole{
-		Name: req.Name,
+	role := new(model.UserRole)
+
+	foundRole, err := role.FindByName(req.Name)
+	if err != nil {
+		response.Error(c, err.Error())
+		return
 	}
 
-	err := role.DeleteRole()
+	err = foundRole.DeleteRole()
 	if err != nil {
 		response.Error(c, err.Error())
 		return

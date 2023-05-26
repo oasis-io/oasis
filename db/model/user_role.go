@@ -1,7 +1,9 @@
 package model
 
 import (
+	gormadapter "github.com/casbin/gorm-adapter/v3"
 	"oasis/config"
+	"strings"
 )
 
 type UserRole struct {
@@ -31,12 +33,38 @@ func (r *UserRole) QueryRole() (*UserRole, error) {
 	return &role, nil
 }
 
+func AddDefaultRolePermission(role *UserRole) error {
+	defaultPermission := &gormadapter.CasbinRule{
+		Ptype: "p",
+		V0:    strings.ToUpper(role.Name),
+		V1:    "/v1/menu",
+		V2:    "POST",
+	}
+
+	db := config.DB
+	result := db.Create(defaultPermission)
+	if result.Error != nil {
+		return result.Error
+	}
+
+	return nil
+}
+
 func (r *UserRole) CreateRole() (err error) {
 	db := config.DB
 
-	result := db.Create(&r)
+	// 角色名称统一大写
+	r.Name = strings.ToUpper(r.Name)
+
+	result := db.Create(r)
 	if result.Error != nil {
 		return result.Error
+	}
+
+	// Add default permission for the new role.
+	err = AddDefaultRolePermission(r)
+	if err != nil {
+		return err
 	}
 
 	return nil
@@ -45,10 +73,32 @@ func (r *UserRole) CreateRole() (err error) {
 func (r *UserRole) DeleteRole() error {
 	db := config.DB
 
-	result := db.Where("name = ?", r.Name).Delete(&r)
+	// Start a new transaction
+	tx := db.Begin()
+
+	// Clear all user associations
+	err := tx.Model(&r).Association("Users").Clear()
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	// Then, delete the role itself
+	result := tx.Delete(&r)
 	if result.Error != nil {
+		tx.Rollback()
 		return result.Error
 	}
+
+	// Delete the casbin rules associated with the role
+	err = tx.Where("v0 = ?", r.Name).Delete(&gormadapter.CasbinRule{}).Error
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	// If everything went well, commit the transaction
+	tx.Commit()
 
 	return nil
 }

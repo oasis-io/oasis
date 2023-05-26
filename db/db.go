@@ -2,10 +2,12 @@ package db
 
 import (
 	"fmt"
+	"go.uber.org/zap"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"oasis/config"
 	"oasis/db/model"
+	"oasis/pkg/log"
 )
 
 func OpenOasis() (db *gorm.DB, err error) {
@@ -82,4 +84,17 @@ func buildMenuTree(menus []model.Menu, parentId string) []model.Menu {
 	}
 
 	return result
+}
+
+func Login(username, password string) (*model.User, error) {
+	db := config.DB
+
+	user := model.User{}
+
+	if err := db.Where("username = ? AND password = ?", username, password).Preload("Roles").First(&user).Error; err != nil {
+		log.Error("获取用户角色错误", zap.Error(err))
+		return nil, err
+	}
+
+	return &user, nil
 }

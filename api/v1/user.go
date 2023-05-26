@@ -42,7 +42,7 @@ func GetUserList(c *gin.Context) {
 
 	db := config.DB
 
-	db.Limit(limit).Offset(offset).Find(&userList)
+	db.Preload("Roles").Limit(limit).Offset(offset).Find(&userList)
 
 	// total row
 	user := db.Model(&model.User{})
@@ -54,11 +54,16 @@ func GetUserList(c *gin.Context) {
 	}
 
 	for _, v := range userList {
+		roleResponses := make([]RoleResponse, len(v.Roles))
+		for i, role := range v.Roles {
+			roleResponses[i] = RoleResponse{Name: role.Name}
+		}
 		_userRes = append(_userRes,
 			UserRes{
 				Username: v.Username,
 				Email:    v.Email,
 				Phone:    v.Phone,
+				Roles:    roleResponses,
 			})
 	}
 

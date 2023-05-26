@@ -2,13 +2,11 @@ package v1
 
 import (
 	"github.com/gin-gonic/gin"
-	"go.uber.org/zap"
 	"oasis/app/request"
 	"oasis/app/response"
-	"oasis/config"
+	"oasis/db"
 	"oasis/db/model"
 	"oasis/pkg/jwt"
-	"oasis/pkg/log"
 )
 
 type LoginResponse struct {
@@ -19,30 +17,35 @@ type LoginResponse struct {
 
 func Login(c *gin.Context) {
 	var req request.Login
+	var claims jwt.CustomClaims
 
 	if err := c.ShouldBindJSON(&req); err != nil {
 		response.Error(c, err.Error())
 		return
 	}
 
-	db := config.DB
-
-	user := model.User{}
-	if err := db.Where("username = ? AND password = ?", req.Username, req.Password).Preload("Roles").First(&user).Error; err != nil {
-		log.Error("获取用户角色错误", zap.Error(err))
+	// 数据库判断数据里是否一致
+	user, err := db.Login(req.Username, req.Password)
+	if err != nil {
 		response.Error(c, err.Error())
 		return
 	}
 
-	// 转换 user.Roles 为 []string 类型
-	roleNames := make([]string, len(user.Roles))
-	for i, role := range user.Roles {
-		roleNames[i] = role.Name
-	}
+	if req.Username == "admin" {
+		claims = jwt.CustomClaims{
+			Username: user.Username,
+		}
+	} else {
+		// 转换 user.Roles 为 []string 类型
+		roleNames := make([]string, len(user.Roles))
+		for i, role := range user.Roles {
+			roleNames[i] = role.Name
+		}
 
-	claims := jwt.CustomClaims{
-		Username: user.Username,
-		Roles:    roleNames,
+		claims = jwt.CustomClaims{
+			Username: user.Username,
+			Roles:    roleNames,
+		}
 	}
 
 	j := jwt.NewJWT()
@@ -53,7 +56,7 @@ func Login(c *gin.Context) {
 	}
 
 	response.SendSuccessData(c, "Login successful", LoginResponse{
-		User:  user,
+		User:  *user,
 		Token: token,
 	})
 }
