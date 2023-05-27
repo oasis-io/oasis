@@ -14,10 +14,12 @@ English | [简体中文](README.md)
 * Database instance management
 
 ### build
+
+```bash
 git clone https://github.com/oasis-io/oasis.git
 cd oasis
 bash scripts/build.sh
-
+```
 
 ### Install
 
