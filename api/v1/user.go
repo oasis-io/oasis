@@ -3,53 +3,47 @@ package v1
 import (
 	"github.com/gin-gonic/gin"
 	"oasis/app/response"
-	"oasis/config"
 	"oasis/db/model"
 	"oasis/pkg/log"
 	"oasis/pkg/utils"
 )
 
 func GetUserInfo(c *gin.Context) {
-	var count int64
-	var user model.User
-
-	db := config.DB
-
 	name, err := utils.GetTokenUserName(c)
 	if err != nil {
 		response.Error(c, "解析token错误")
+		return
 	}
 
-	db.Where("username = ? ", name).Find(&user).Count(&count)
-	if count == 0 {
-		response.Error(c, "没有用户")
+	user := model.User{
+		Username: name,
 	}
+	userInfo, err := user.GetUserByUsername()
+	if err != nil {
+		response.Error(c, err.Error())
+		return
+	}
+
 	response.SendSuccessData(c, "获取用户信息成功", UserResponse{
-		User: user,
+		User: *userInfo,
 	})
 }
 
 func GetUserList(c *gin.Context) {
 	var req PageInfo
-	var count int64
-	var _userRes []UserRes
-	var userList []model.User
+	var userRes []UserRes
 
 	if err := c.ShouldBindJSON(&req); err != nil {
 		response.Error(c, err.Error())
 		return
 	}
 
-	limit := req.PageSize
-	offset := req.PageSize * (req.CurrentPage - 1)
-
-	db := config.DB
-
-	db.Preload("Roles").Limit(limit).Offset(offset).Find(&userList)
-
-	// total row
-	user := db.Model(&model.User{})
-	user.Count(&count)
+	user := model.User{}
+	userList, count, err := user.GetUserList(req.PageSize, req.CurrentPage)
+	if err != nil {
+		response.Error(c, err.Error())
+		return
+	}
 
 	if len(userList) <= 0 {
 		response.Error(c, "No user found!")
@@ -61,7 +55,7 @@ func GetUserList(c *gin.Context) {
 		for i, role := range v.Roles {
 			roleResponses[i] = RoleResponse{Name: role.Name}
 		}
-		_userRes = append(_userRes,
+		userRes = append(userRes,
 			UserRes{
 				Username: v.Username,
 				Email:    v.Email,
@@ -71,7 +65,7 @@ func GetUserList(c *gin.Context) {
 	}
 
 	response.SendSuccessData(c, "获取用户列表成功", PageResponse{
-		Data:        _userRes,
+		Data:        userRes,
 		Total:       count,
 		PageSize:    req.PageSize,
 		CurrentPage: req.CurrentPage,
@@ -80,38 +74,33 @@ func GetUserList(c *gin.Context) {
 
 func GetUser(c *gin.Context) {
 	var req model.User
-	var count int64
-	var user []model.User
-	var _userRes []UserRes
+	var userRes []UserRes
 
 	if err := c.ShouldBindJSON(&req); err != nil {
 		response.Error(c, err.Error())
 		return
 	}
 
-	db := config.DB
-
-	name := req.Username
-
-	db.Where("username = ? ", name).Find(&user).Count(&count)
-
-	if len(user) <= 0 {
-		response.Error(c, "No user data!")
-	} else {
-		for _, v := range user {
-			_userRes = append(_userRes,
-				UserRes{
-					Username: v.Username,
-					Email:    v.Email,
-					Phone:    v.Phone,
-					Password: v.Password,
-				})
-		}
-
-		response.SendSuccessData(c, "获取用户成功", PageResponse{
-			Data: _userRes,
-		})
+	user := model.User{
+		Username: req.Username,
 	}
+
+	userInfo, err := user.GetUserByUsername()
+	if err != nil {
+		response.Error(c, err.Error())
+		return
+	}
+
+	userRes = append(userRes, UserRes{
+		Username: userInfo.Username,
+		Email:    userInfo.Email,
+		Phone:    userInfo.Phone,
+		Password: userInfo.Password,
+	})
+
+	response.SendSuccessData(c, "获取用户成功", PageResponse{
+		Data: userRes,
+	})
 }
 
 func CreateUser(c *gin.Context) {
@@ -129,7 +118,7 @@ func CreateUser(c *gin.Context) {
 
 	if len(req.RoleNames) != 0 {
 		for _, roleName := range req.RoleNames {
-			role, err := new(model.UserRole).FindByName(roleName)
+			role, err := new(model.UserRole).GetRoleName(roleName)
 			if err != nil {
 				response.Error(c, "Role not found: "+roleName)
 				return
@@ -158,28 +147,22 @@ func CreateUser(c *gin.Context) {
 
 func UpdateUser(c *gin.Context) {
 	var req model.User
-	var user model.User
 
 	if err := c.ShouldBindJSON(&req); err != nil {
 		response.Error(c, err.Error())
 		return
 	}
 
-	db := config.DB
-
-	name := req.Username
-
-	// updateMap := map[string]interface{}{}
-
-	if req.Email != "" {
-		db.Model(&user).Where("username = ?", name).Update("email", req.Email)
+	user := model.User{
+		Username: req.Username,
+		Email:    req.Email,
+		Phone:    req.Phone,
+		Password: req.Password,
 	}
-	if req.Phone != "" {
-		db.Model(&user).Where("username = ?", name).Update("phone", req.Phone)
-	}
-	if req.Password != "" {
-		passwd := req.Password
-		db.Model(&user).Where("username = ?", name).Update("password", passwd)
+
+	if err := user.UpdateUser(); err != nil {
+		response.Error(c, err.Error())
+		return
 	}
 
 	response.Success(c)

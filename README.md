@@ -1,8 +1,8 @@
-# oasis
+# Oasis
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/carina-io/carina/blob/main/LICENSE)
 
-简体中文 | [English](./README_en.md)
+简体中文 | [English](README_en.md)
 
 ### 介绍
 

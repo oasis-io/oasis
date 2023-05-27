@@ -17,34 +17,25 @@ type UserRole struct {
 // RoleMenuRelation have better scalability
 type RoleMenuRelation struct {
 	Model
-	RoleID string `json:"roleId" gorm:"column:role_id;not null;"`
-	MenuID string `json:"menuId" gorm:"column:menu_id;not null;"`
+	RoleID uint `json:"roleId" gorm:"column:role_id;not null;"`
+	MenuID uint `json:"menuId" gorm:"column:menu_id;not null;"`
 }
 
-func (r *UserRole) QueryRole() (*UserRole, error) {
-	var role UserRole
-	db := config.DB
-
-	result := db.Where("name = ?", r.Name).First(&role)
-	if result.Error != nil {
-		return nil, result.Error
-	}
-
-	return &role, nil
-}
-
-func AddDefaultRolePermission(role *UserRole) error {
-	defaultPermission := &gormadapter.CasbinRule{
-		Ptype: "p",
-		V0:    strings.ToUpper(role.Name),
-		V1:    "/v1/menu",
-		V2:    "POST",
+func (r *UserRole) addDefaultRolePermission() error {
+	defaultPermissions := []gormadapter.CasbinRule{
+		// Menu
+		{Ptype: "p", V0: strings.ToUpper(r.Name), V1: "/v1/menu", V2: "POST"},
+		// Home
+		{Ptype: "p", V0: strings.ToUpper(r.Name), V1: "/v1/home", V2: "POST"},
 	}
 
 	db := config.DB
-	result := db.Create(defaultPermission)
-	if result.Error != nil {
-		return result.Error
+
+	for _, permission := range defaultPermissions {
+		result := db.Create(&permission)
+		if result.Error != nil {
+			return result.Error
+		}
 	}
 
 	return nil
@@ -62,7 +53,7 @@ func (r *UserRole) CreateRole() (err error) {
 	}
 
 	// Add default permission for the new role.
-	err = AddDefaultRolePermission(r)
+	err = r.addDefaultRolePermission()
 	if err != nil {
 		return err
 	}
@@ -120,12 +111,31 @@ func (r *UserRole) GetRoleNames() ([]string, error) {
 	return roleNames, nil
 }
 
-func (r *UserRole) FindByName(name string) (*UserRole, error) {
-	db := config.DB
+func (r *UserRole) GetRoleName(name string) (*UserRole, error) {
 	var role UserRole
+	db := config.DB
+
 	result := db.Where("name = ?", name).First(&role)
 	if result.Error != nil {
 		return nil, result.Error
 	}
+
 	return &role, nil
+}
+
+func (r *UserRole) GetRoleList(pageSize, currentPage int) ([]UserRole, int64, error) {
+	var roleList []UserRole
+	var count int64
+
+	db := config.DB
+
+	limit := pageSize
+	offset := pageSize * (currentPage - 1)
+
+	db.Limit(limit).Offset(offset).Find(&roleList)
+
+	// 获取总记录数
+	db.Model(&UserRole{}).Count(&count)
+
+	return roleList, count, nil
 }

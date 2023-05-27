@@ -2,6 +2,7 @@ package db
 
 import (
 	"fmt"
+	gormadapter "github.com/casbin/gorm-adapter/v3"
 	"go.uber.org/zap"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -97,4 +98,15 @@ func Login(username, password string) (*model.User, error) {
 	}
 
 	return &user, nil
+}
+
+func GetCasbinRulesByRole(roleName string) ([]gormadapter.CasbinRule, error) {
+	var rules []gormadapter.CasbinRule
+
+	db := config.DB
+	err := db.Where("v0 = ?", roleName).Find(&rules).Error
+	if err != nil {
+		return nil, err
+	}
+	return rules, nil
 }

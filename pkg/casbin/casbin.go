@@ -1,6 +1,7 @@
 package casbin
 
 import (
+	"errors"
 	"github.com/casbin/casbin/v2"
 	"github.com/casbin/casbin/v2/model"
 	gormadapter "github.com/casbin/gorm-adapter/v3"
@@ -35,6 +36,7 @@ func Casbin() *casbin.CachedEnforcer {
 			log.Error(err.Error())
 			return
 		}
+
 		cachedEnforcer.SetExpireTime(60 * 60)
 		err = cachedEnforcer.LoadPolicy()
 		if err != nil {
@@ -43,6 +45,19 @@ func Casbin() *casbin.CachedEnforcer {
 		}
 	})
 	return cachedEnforcer
+}
+
+func GetUserPermissions(username string) ([][]string, error) {
+	e := Casbin() // 获取Casbin enforcer实例
+	if e == nil {
+		return nil, errors.New("Casbin enforcer instance is nil")
+	}
+
+	// 使用GetFilteredPolicy获取该用户的所有策略
+	// 0 是角色名（v0）在策略中的位置，username 是要匹配的角色名
+	policies := e.GetFilteredPolicy(0, username)
+
+	return policies, nil
 }
 
 func InitCasbinRule() error {

@@ -1,8 +1,8 @@
-# oasis
+# Oasis
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/carina-io/carina/blob/main/LICENSE)
 
-English | [简体中文](./README.md)
+English | [简体中文](README.md)
 
 ### Introduction
 
@@ -30,6 +30,6 @@ FLUSH PRIVILEGES;
 nohup ./oasis -c oasis.toml &
 ```
 
-# Community
+## Community
 
 Email：oasis_2022@126.com

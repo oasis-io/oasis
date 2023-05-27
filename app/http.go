@@ -3,7 +3,6 @@ package app
 import (
 	"oasis/config"
 	"oasis/db"
-	"oasis/pkg/casbin"
 	"oasis/pkg/log"
 )
 
@@ -20,11 +19,11 @@ func RunServer() {
 	// 初始化表格
 	db.AutoMigrate()
 
-	// 初始化 Casbin
-	err := casbin.InitCasbinRule()
-	if err != nil {
-		panic(err)
-	}
+	//// 初始化 Casbin
+	//err := casbin.InitCasbinRule()
+	//if err != nil {
+	//	panic(err)
+	//}
 
 	log.Info("Starting Oasis server")
 	startHttp()

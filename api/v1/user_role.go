@@ -3,50 +3,43 @@ package v1
 import (
 	"github.com/gin-gonic/gin"
 	"oasis/app/response"
-	"oasis/config"
 	"oasis/db/model"
 )
 
 func GetRoleList(c *gin.Context) {
 	var req PageInfo
-	var count int64
-	var _roleRes []RoleResponse
-	var roleList []model.UserRole
+	var roleRes []RoleResponse
 
 	if err := c.ShouldBindJSON(&req); err != nil {
 		response.Error(c, err.Error())
 		return
 	}
 
-	limit := req.PageSize
-	offset := req.PageSize * (req.CurrentPage - 1)
+	userRole := model.UserRole{}
+	roleList, count, err := userRole.GetRoleList(req.PageSize, req.CurrentPage)
+	if err != nil {
+		response.Error(c, err.Error())
+		return
+	}
 
-	db := config.DB
-
-	db.Limit(limit).Offset(offset).Find(&roleList)
-
-	// total row
-	user := db.Model(&model.UserRole{})
-	user.Count(&count)
 	if len(roleList) <= 0 {
-		response.Error(c, "没有找到用户")
+		response.Error(c, "no role")
 		return
 	}
 
 	for _, v := range roleList {
-		_roleRes = append(_roleRes,
+		roleRes = append(roleRes,
 			RoleResponse{
 				Name: v.Name,
 			})
 	}
 
 	response.SendSuccessData(c, "获取角色列表成功", PageResponse{
-		Data:        _roleRes,
+		Data:        roleRes,
 		Total:       count,
 		PageSize:    req.PageSize,
 		CurrentPage: req.CurrentPage,
 	})
-
 }
 
 func GetRole(c *gin.Context) {
@@ -56,6 +49,7 @@ func GetRole(c *gin.Context) {
 }
 
 func GetRoles(c *gin.Context) {
+
 	role := model.UserRole{}
 	roleNames, err := role.GetRoleNames()
 	if err != nil {
@@ -111,7 +105,7 @@ func DeleteRole(c *gin.Context) {
 
 	role := new(model.UserRole)
 
-	foundRole, err := role.FindByName(req.Name)
+	foundRole, err := role.GetRoleName(req.Name)
 	if err != nil {
 		response.Error(c, err.Error())
 		return
