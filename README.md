@@ -15,7 +15,8 @@
 
 
 ### 编译
-
+git clone https://github.com/oasis-io/oasis.git
+cd oasis
 bash scripts/build.sh
 
 
