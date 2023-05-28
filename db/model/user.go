@@ -6,6 +6,7 @@ package model
 import (
 	"errors"
 	"fmt"
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 	"oasis/config"
 )
@@ -28,7 +29,7 @@ func (u *User) GetUserByUsername() (*User, error) {
 	result := db.Model(u).Where("username = ?", u.Username).First(&user)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
-			return nil, errors.New("no user")
+			return nil, nil
 		}
 		return nil, result.Error
 	}
@@ -47,7 +48,12 @@ func (u *User) UpdateUser() error {
 		updates["phone"] = u.Phone
 	}
 	if u.Password != "" {
-		updates["password"] = u.Password
+		// 对新密码进行加密
+		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)
+		if err != nil {
+			return err
+		}
+		updates["password"] = string(hashedPassword)
 	}
 
 	if err := db.Model(u).Updates(updates).Error; err != nil {
@@ -60,6 +66,16 @@ func (u *User) UpdateUser() error {
 func (u *User) CreateUser() error {
 	db := config.DB
 
+	// bcrypt加密
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return err
+	}
+
+	// 使用加密后的密码替换原始密码
+	u.Password = string(hashedPassword)
+
+	// 创建用户记录
 	result := db.Create(&u)
 	if result.Error != nil {
 		return result.Error

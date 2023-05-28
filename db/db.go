@@ -4,11 +4,13 @@ import (
 	"fmt"
 	gormadapter "github.com/casbin/gorm-adapter/v3"
 	"go.uber.org/zap"
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"oasis/config"
 	"oasis/db/model"
 	"oasis/pkg/log"
+	"sort"
 )
 
 func OpenOasis() (*gorm.DB, error) {
@@ -78,11 +80,16 @@ func buildMenuTree(menus []model.Menu, parentId string) []model.Menu {
 	for _, menu := range menus {
 		// 将 menu.ID 转换为 string 来比较
 		if menu.ParentID == parentId {
-			children := buildMenuTree(menus, fmt.Sprintf("%d", menu.ID))
+			children := buildMenuTree(menus, fmt.Sprintf("%d", menu.Sort))
 			menu.Children = children
 			result = append(result, menu)
 		}
 	}
+
+	// 对二级菜单进行排序
+	sort.Slice(result, func(i, j int) bool {
+		return result[i].Sort < result[j].Sort
+	})
 
 	return result
 }
@@ -92,8 +99,17 @@ func Login(username, password string) (*model.User, error) {
 
 	user := model.User{}
 
-	if err := db.Where("username = ? AND password = ?", username, password).Preload("Roles").First(&user).Error; err != nil {
-		log.Error("获取用户角色错误", zap.Error(err))
+	// 根据用户名查询用户记录
+	err := db.Where("username = ?", username).First(&user).Error
+	if err != nil {
+		log.Error("获取用户错误", zap.Error(err))
+		return nil, err
+	}
+
+	// 验证密码
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+	if err != nil {
+		log.Error("密码校验失败", zap.Error(err))
 		return nil, err
 	}
 

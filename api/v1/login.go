@@ -27,7 +27,7 @@ func Login(c *gin.Context) {
 	// 数据库判断数据里是否一致
 	user, err := db.Login(req.Username, req.Password)
 	if err != nil {
-		response.Error(c, err.Error())
+		response.Error(c, "username or password error")
 		return
 	}
 

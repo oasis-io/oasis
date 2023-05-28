@@ -3,12 +3,13 @@ package model
 import (
 	"errors"
 	"fmt"
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 	"oasis/config"
 )
 
 type Api struct {
-	Model
+	UUIDModel
 	Group  string `json:"group" gorm:"column:group;not null;"`  // API业务划分
 	Path   string `json:"path" gorm:"column:path;not null;"`    // api路径
 	Method string `json:"method" gorm:"column:method;not null"` // 方法:POST、GET、PUT、DELETE
@@ -17,6 +18,8 @@ type Api struct {
 
 func (api *Api) CreateApi() error {
 	db := config.DB
+
+	api.ID = uuid.New()
 
 	result := db.Create(api)
 	if result.Error != nil {
@@ -30,13 +33,16 @@ func (api *Api) CreateMultipleApi(apis []Api) error {
 	db := config.DB
 
 	tx := db.Begin()
-	for _, data := range apis {
-		result := tx.Create(&data)
+
+	for i := range apis {
+		apis[i].ID = uuid.New()
+		result := tx.Create(&apis[i])
 		if result.Error != nil {
 			tx.Rollback()
 			return result.Error
 		}
 	}
+
 	tx.Commit()
 
 	return nil
