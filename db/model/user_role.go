@@ -41,7 +41,7 @@ func (r *UserRole) addDefaultRolePermission() error {
 	return nil
 }
 
-func (r *UserRole) CreateRole() (err error) {
+func (r *UserRole) CreateRole() error {
 	db := config.DB
 
 	// 角色名称统一大写
@@ -53,7 +53,7 @@ func (r *UserRole) CreateRole() (err error) {
 	}
 
 	// Add default permission for the new role.
-	err = r.addDefaultRolePermission()
+	err := r.addDefaultRolePermission()
 	if err != nil {
 		return err
 	}

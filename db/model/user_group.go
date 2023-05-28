@@ -1,3 +1,6 @@
+// All database tables do not use foreign keys
+// The suffix of the associated table of the two tables is unified with relation
+
 package model
 
 type UserGroup struct {

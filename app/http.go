@@ -19,11 +19,11 @@ func RunServer() {
 	// 初始化表格
 	db.AutoMigrate()
 
-	//// 初始化 Casbin
-	//err := casbin.InitCasbinRule()
-	//if err != nil {
-	//	panic(err)
-	//}
+	err := db.InsertData()
+	if err != nil {
+		log.Error("初始化数据失败:" + err.Error())
+		panic(err)
+	}
 
 	log.Info("Starting Oasis server")
 	startHttp()

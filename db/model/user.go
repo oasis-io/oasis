@@ -1,3 +1,6 @@
+// All database tables do not use foreign keys
+// The suffix of the associated table of the two tables is unified with relation
+
 package model
 
 import (
@@ -6,9 +9,6 @@ import (
 	"gorm.io/gorm"
 	"oasis/config"
 )
-
-// All database tables do not use foreign keys
-// The suffix of the associated table of the two tables is unified with relation
 
 type User struct {
 	Model
@@ -57,7 +57,7 @@ func (u *User) UpdateUser() error {
 	return nil
 }
 
-func (u *User) CreateUser() (err error) {
+func (u *User) CreateUser() error {
 	db := config.DB
 
 	result := db.Create(&u)

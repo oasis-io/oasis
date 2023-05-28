@@ -5,9 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="771fb103-1b86-47b3-932e-a6713078e0ea" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/db/data.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/db/model/api.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/data/api.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README_en.md" beforeDir="false" afterPath="$PROJECT_DIR$/README_en.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/http.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/http.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/db.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/db.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/migrate.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/migrate.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/model/menu.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/model/menu.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/model/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/model/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/model/user_group.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/model/user_group.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/model/user_role.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/model/user_role.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/data/data.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,11 +65,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/scripts/data" />
       <recent name="$PROJECT_DIR$/pkg/jwt" />
       <recent name="$PROJECT_DIR$/app/request" />
       <recent name="$PROJECT_DIR$/app/response" />
       <recent name="$PROJECT_DIR$/pkg" />
-      <recent name="$PROJECT_DIR$/pkg/utils" />
     </key>
   </component>
   <component name="RunManager">

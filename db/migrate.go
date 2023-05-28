@@ -13,7 +13,6 @@ func AutoMigrate() {
 	once.Do(func() {
 		db := config.DB
 
-		// migrate table
 		err := db.AutoMigrate(
 			&model.Instance{},
 			&model.User{},
@@ -21,8 +20,10 @@ func AutoMigrate() {
 			&model.UserGroup{},
 			&model.Menu{},
 			&model.RoleMenuRelation{},
+			&model.Api{},
 		)
 		if err != nil {
+			log.Error("migrate table fail:" + err.Error())
 			panic(err)
 		}
 		log.Info("migrate table success")

@@ -11,11 +11,11 @@ import (
 	"oasis/pkg/log"
 )
 
-func OpenOasis() (db *gorm.DB, err error) {
+func OpenOasis() (*gorm.DB, error) {
 	return openOasis()
 }
 
-func openOasis() (db *gorm.DB, err error) {
+func openOasis() (*gorm.DB, error) {
 	config := config.NewConfig()
 	user := config.MySQL.User
 	password := config.MySQL.Password
@@ -32,7 +32,7 @@ func openOasis() (db *gorm.DB, err error) {
 		SkipInitializeWithVersion: false,
 		DisableDatetimePrecision:  true,
 	}
-	db, err = gorm.Open(mysql.New(mysqlConfig), &gorm.Config{
+	db, err := gorm.Open(mysql.New(mysqlConfig), &gorm.Config{
 		DisableForeignKeyConstraintWhenMigrating: true,
 	})
 
@@ -53,12 +53,12 @@ func openOasis() (db *gorm.DB, err error) {
 	return db, err
 }
 
-func OpenInstance() (db *gorm.DB, err error) {
+func OpenInstance() (*gorm.DB, error) {
 	return openInstance()
 }
 
-func openInstance() (db *gorm.DB, err error) {
-	return db, err
+func openInstance() (*gorm.DB, error) {
+	return nil, nil
 }
 
 func GetMenuTree() ([]model.Menu, error) {
