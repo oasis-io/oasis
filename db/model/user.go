@@ -63,6 +63,33 @@ func (u *User) UpdateUser() error {
 	return nil
 }
 
+// UpdateRoles 更新用户的角色
+func (u *User) UpdateRoles(roles []string) error {
+	db := config.DB
+	var userRoles []*UserRole
+
+	// 查找所有的角色
+	if err := db.Where("name IN ?", roles).Find(&userRoles).Error; err != nil {
+		return err
+	}
+
+	// 获取用户对象
+	var user User
+	if err := db.Where("username = ?", u.Username).First(&user).Error; err != nil {
+		return err
+	}
+
+	// 获取用户的角色关联对象
+	association := db.Model(&user).Association("Roles")
+
+	// 更新用户的角色
+	if err := association.Replace(userRoles); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (u *User) CreateUser() error {
 	db := config.DB
 
