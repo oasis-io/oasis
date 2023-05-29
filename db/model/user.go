@@ -38,17 +38,13 @@ func (u *User) GetUserByUsername() (*User, error) {
 
 func (u *User) UpdateUser() error {
 	db := config.DB
-
-	updates := make(map[string]interface{})
-
-	if u.Email != "" {
-		updates["email"] = u.Email
+	updates := map[string]interface{}{
+		"email":    u.Email,
+		"phone":    u.Phone,
+		"password": u.Password,
 	}
-	if u.Phone != "" {
-		updates["phone"] = u.Phone
-	}
+
 	if u.Password != "" {
-		// 对新密码进行加密
 		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)
 		if err != nil {
 			return err
@@ -56,39 +52,101 @@ func (u *User) UpdateUser() error {
 		updates["password"] = string(hashedPassword)
 	}
 
-	if err := db.Model(u).Where("username = ?", u.Username).Updates(updates).Error; err != nil {
-		return err
+	result := db.Model(&User{}).Where("username = ?", u.Username).Updates(updates)
+	if result.Error != nil {
+		return result.Error
 	}
-
+	if result.RowsAffected == 0 {
+		return errors.New("user not found")
+	}
 	return nil
 }
 
-// UpdateRoles 更新用户的角色
 func (u *User) UpdateRoles(roles []string) error {
 	db := config.DB
 	var userRoles []*UserRole
-
-	// 查找所有的角色
 	if err := db.Where("name IN ?", roles).Find(&userRoles).Error; err != nil {
 		return err
 	}
 
-	// 获取用户对象
 	var user User
 	if err := db.Where("username = ?", u.Username).First(&user).Error; err != nil {
 		return err
 	}
 
-	// 获取用户的角色关联对象
-	association := db.Model(&user).Association("Roles")
-
-	// 更新用户的角色
-	if err := association.Replace(userRoles); err != nil {
+	tx := db.Begin()
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
+	if err := tx.Error; err != nil {
 		return err
 	}
 
-	return nil
+	if err := tx.Model(&user).Association("Roles").Replace(userRoles); err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	return tx.Commit().Error
 }
+
+//func (u *User) UpdateUser() error {
+//	db := config.DB
+//
+//	updates := make(map[string]interface{})
+//
+//	//updates["email"] = u.Email
+//	//updates["phone"] = u.Phone
+//	if u.Password != "" {
+//		// 对新密码进行加密
+//		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)
+//		if err != nil {
+//			return err
+//		}
+//		updates["password"] = string(hashedPassword)
+//	}
+//
+//	if err := db.Model(u).Where("username = ?", u.Username).Updates(updates).Error; err != nil {
+//		return err
+//	}
+//
+//	return nil
+//}
+//
+//// UpdateRoles 更新用户的角色
+//func (u *User) UpdateRoles(roles []string) error {
+//	db := config.DB
+//	var userRoles []*UserRole
+//
+//	// 查找所有的角色
+//	if err := db.Where("name IN ?", roles).Find(&userRoles).Error; err != nil {
+//		return err
+//	}
+//
+//	// 获取用户对象
+//	var user User
+//	if err := db.Where("username = ?", u.Username).First(&user).Error; err != nil {
+//		return err
+//	}
+//
+//	// 获取用户的角色关联对象
+//	association := db.Model(&user).Association("Roles")
+//	//// 判断关联表是否已经有数据
+//	//count := association.Count()
+//	//if count > 0 {
+//	//	// 如果关联表已经有数据，直接返回
+//	//	return nil
+//	//}
+//
+//	// 更新用户的角色
+//	if err := association.Replace(userRoles); err != nil {
+//		return err
+//	}
+//
+//	return nil
+//}
 
 func (u *User) CreateUser() error {
 	db := config.DB

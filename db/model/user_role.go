@@ -53,10 +53,10 @@ func (r *UserRole) CreateRole() error {
 	}
 
 	// Add default permission for the new role.
-	//err := r.addDefaultRolePermission()
-	//if err != nil {
-	//	return err
-	//}
+	err := r.addDefaultRolePermission()
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

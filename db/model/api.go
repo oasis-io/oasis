@@ -3,13 +3,12 @@ package model
 import (
 	"errors"
 	"fmt"
-	"github.com/google/uuid"
 	"gorm.io/gorm"
 	"oasis/config"
 )
 
 type Api struct {
-	UUIDModel
+	Model
 	Group  string `json:"group" gorm:"column:group;not null;"`  // API业务划分
 	Path   string `json:"path" gorm:"column:path;not null;"`    // api路径
 	Method string `json:"method" gorm:"column:method;not null"` // 方法:POST、GET、PUT、DELETE
@@ -19,7 +18,7 @@ type Api struct {
 func (api *Api) CreateApi() error {
 	db := config.DB
 
-	api.ID = uuid.New()
+	//api.ID = uuid.New()
 
 	result := db.Create(api)
 	if result.Error != nil {
@@ -35,7 +34,7 @@ func (api *Api) CreateMultipleApi(apis []Api) error {
 	tx := db.Begin()
 
 	for i := range apis {
-		apis[i].ID = uuid.New()
+		//apis[i].ID = uuid.New()
 		result := tx.Create(&apis[i])
 		if result.Error != nil {
 			tx.Rollback()
@@ -48,7 +47,6 @@ func (api *Api) CreateMultipleApi(apis []Api) error {
 	return nil
 }
 
-// 修改一条数据
 func (api *Api) UpdateApi() error {
 	db := config.DB
 
@@ -60,7 +58,6 @@ func (api *Api) UpdateApi() error {
 	return nil
 }
 
-// 删除一条数据
 func (api *Api) DeleteApi() error {
 	db := config.DB
 
@@ -84,7 +81,6 @@ func (api *Api) DeleteAllApis() error {
 	return nil
 }
 
-// 查询一条数据
 func (api *Api) GetApi() (*Api, error) {
 	db := config.DB
 

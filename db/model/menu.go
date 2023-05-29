@@ -5,13 +5,11 @@ package model
 
 import (
 	"fmt"
-	"github.com/google/uuid"
 	"oasis/config"
 )
 
 type Menu struct {
-	UUIDModel
-
+	Model
 	ParentID  string `json:"parentID" gorm:"column:parent_id;not null;comment:父菜单ID"`
 	Name      string `json:"name" gorm:"column:name;unique;not null"`
 	Path      string `json:"path" gorm:"column:path;not null"`
@@ -77,7 +75,7 @@ func (menu *Menu) LinkApis() error {
 func (menu *Menu) CreateMenu() error {
 	db := config.DB
 
-	menu.ID = uuid.New()
+	//menu.ID = uuid.New()
 
 	// 创建菜单记录
 	result := db.Create(&menu)
@@ -100,7 +98,7 @@ func (menu *Menu) CreateMultipleMenu(menus []Menu) error {
 	tx := db.Begin()
 
 	for i := range menus {
-		menus[i].ID = uuid.New()
+		//menus[i].ID = uuid.New()
 		result := tx.Create(&menus[i])
 		if result.Error != nil {
 			tx.Rollback()

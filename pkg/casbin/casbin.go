@@ -60,6 +60,15 @@ func GetUserPermissions(username string) ([][]string, error) {
 	return policies, nil
 }
 
+func InitCasbin() {
+	db := config.DB
+	_, err := gormadapter.NewAdapterByDB(db)
+	if err != nil {
+		log.Error("Casbin 初始化错误：" + err.Error())
+		return
+	}
+}
+
 func InitCasbinRule() error {
 
 	db := config.DB

@@ -3,6 +3,7 @@ package app
 import (
 	"oasis/config"
 	"oasis/db"
+	"oasis/pkg/casbin"
 	"oasis/pkg/log"
 )
 
@@ -18,6 +19,8 @@ func RunServer() {
 
 	// 初始化表格
 	db.AutoMigrate()
+
+	casbin.InitCasbin()
 
 	err := db.InsertData()
 	if err != nil {
