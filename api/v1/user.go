@@ -149,7 +149,8 @@ func UpdateUser(c *gin.Context) {
 	var req model.User
 
 	if err := c.ShouldBindJSON(&req); err != nil {
-		response.Error(c, err.Error())
+		log.Error("parameter binding errors: " + err.Error())
+		response.Error(c, "parameter binding errors")
 		return
 	}
 
@@ -161,12 +162,46 @@ func UpdateUser(c *gin.Context) {
 	}
 
 	if err := user.UpdateUser(); err != nil {
-		response.Error(c, err.Error())
+		log.Error("database update error：" + err.Error())
+		response.Error(c, "database update error")
 		return
 	}
 
 	response.Success(c)
 }
+
+//func UpdateUser(c *gin.Context) {
+//	var req UserRequest
+//
+//	if err := c.ShouldBindJSON(&req); err != nil {
+//		log.Error("parameter binding errors: " + err.Error())
+//		response.Error(c, "parameter binding errors")
+//		return
+//	}
+//
+//	user := model.User{
+//		Username: req.Username,
+//		Email:    req.Email,
+//		Phone:    req.Phone,
+//		Password: req.Password,
+//	}
+//
+//	// 处理角色信息
+//	roles := make([]*model.UserRole, len(req.Roles))
+//	for i, roleName := range req.Roles {
+//		role := &model.UserRole{Name: roleName}
+//		roles[i] = role
+//	}
+//	user.Roles = roles
+//
+//	if err := user.UpdateUser(); err != nil {
+//		log.Error("database update error：" + err.Error())
+//		response.Error(c, "database update error")
+//		return
+//	}
+//
+//	response.Success(c)
+//}
 
 func DeleteUser(c *gin.Context) {
 	var req model.User

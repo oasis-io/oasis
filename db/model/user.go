@@ -56,7 +56,7 @@ func (u *User) UpdateUser() error {
 		updates["password"] = string(hashedPassword)
 	}
 
-	if err := db.Model(u).Updates(updates).Error; err != nil {
+	if err := db.Model(u).Where("username = ?", u.Username).Updates(updates).Error; err != nil {
 		return err
 	}
 

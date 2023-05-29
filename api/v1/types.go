@@ -18,6 +18,11 @@ type UserResponse struct {
 	User model.User `json:"user"`
 }
 
+type UserRequest struct {
+	model.User
+	Roles []string `json:"roles"`
+}
+
 type UserRes struct {
 	Username string         `json:"username"`
 	Email    string         `json:"email"`
