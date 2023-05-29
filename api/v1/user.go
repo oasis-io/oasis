@@ -85,10 +85,17 @@ func GetUser(c *gin.Context) {
 		Username: req.Username,
 	}
 
-	userInfo, err := user.GetUserByUsername()
+	userInfo, err := user.QueryUserAndRolesByUsername()
 	if err != nil {
 		response.Error(c, err.Error())
 		return
+	}
+
+	roles := userInfo.Roles
+
+	roleResponses := make([]RoleResponse, len(roles))
+	for i, role := range roles {
+		roleResponses[i] = RoleResponse{Name: role.Name}
 	}
 
 	userRes = append(userRes, UserRes{
@@ -96,6 +103,7 @@ func GetUser(c *gin.Context) {
 		Email:    userInfo.Email,
 		Phone:    userInfo.Phone,
 		Password: userInfo.Password,
+		Roles:    roleResponses,
 	})
 
 	response.SendSuccessData(c, "获取用户成功", PageResponse{
