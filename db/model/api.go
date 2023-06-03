@@ -10,9 +10,9 @@ import (
 type Api struct {
 	Model
 	Group  string `json:"group" gorm:"column:group;not null;"`  // API业务划分
+	Desc   string `json:"desc" gorm:"column:desc;not null"`     // 备注API作用
 	Path   string `json:"path" gorm:"column:path;not null;"`    // api路径
 	Method string `json:"method" gorm:"column:method;not null"` // 方法:POST、GET、PUT、DELETE
-	Desc   string `json:"desc" gorm:"column:desc;"`             // api中文描述
 }
 
 func (api *Api) CreateApi() error {

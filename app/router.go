@@ -36,7 +36,11 @@ func HttpRequests() {
 	v1Router.Use(middleware.JWTAuth()).Use(middleware.CasbinAuth())
 	{
 		// Menu
-		v1Router.POST("/menu", v1.GetMenu)
+		v1Router.POST("/menu", v1.GetMenuTree)
+		v1Router.POST("/menu/getBaseMenuTree", v1.GetBaseMenuTree)
+		v1Router.POST("/menu/permissions", v1.MenuPermissions)
+		v1Router.POST("/menu/getBaseMenuApi", v1.GetBaseMenuApi)
+		v1Router.POST("/menu/getMenuAuthorized", v1.GetMenuAuthorized)
 
 		// Instance
 		v1Router.POST("/instance", v1.GetInstance)

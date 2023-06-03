@@ -47,120 +47,49 @@ func insertUser() error {
 func insertApi() error {
 
 	table := []model.Api{
+		// 基础API
 		{
-			Group:  "Menu",
+			Group:  "基础API",
+			Desc:   "查询菜单",
 			Path:   "/v1/menu",
 			Method: "POST",
 		},
+		// 用户管理
 		{
-			Group:  "UserList",
+			Group:  "用户管理",
+			Desc:   "查询用户",
 			Path:   "/v1/user",
 			Method: "POST",
 		},
 		{
-			Group:  "UserList",
+			Group:  "用户管理",
+			Desc:   "删除用户",
 			Path:   "/v1/user",
 			Method: "DELETE",
 		},
 		{
-			Group:  "UserList",
+			Group:  "用户管理",
+			Desc:   "修改用户",
 			Path:   "/v1/user",
 			Method: "PATCH",
 		},
 		{
-			Group:  "UserList",
+			Group:  "用户管理",
+			Desc:   "创建用户",
 			Path:   "/v1/user/add",
 			Method: "POST",
 		},
 		{
-			Group:  "UserList",
+			Group:  "用户管理",
+			Desc:   "查询用户列表",
 			Path:   "/v1/user/list",
 			Method: "POST",
 		},
 		{
-			Group:  "UserList",
+			Group:  "用户管理",
+			Desc:   "查询用户信息",
 			Path:   "/v1/user/info",
 			Method: "GET",
-		},
-		{
-			Group:  "UserRole",
-			Path:   "/v1/user/role",
-			Method: "POST",
-		},
-		{
-			Group:  "UserRole",
-			Path:   "/v1/user/role",
-			Method: "DELETE",
-		},
-		{
-			Group:  "UserRole",
-			Path:   "/v1/user/role",
-			Method: "PATCH",
-		},
-		{
-			Group:  "UserRole",
-			Path:   "/v1/user/role/add",
-			Method: "POST",
-		},
-		{
-			Group:  "UserRole",
-			Path:   "/v1/user/role/list",
-			Method: "POST",
-		},
-		{
-			Group:  "UserGroup",
-			Path:   "/v1/user/group",
-			Method: "POST",
-		},
-		{
-			Group:  "UserGroup",
-			Path:   "/v1/user/group",
-			Method: "DELETE",
-		},
-		{
-			Group:  "UserGroup",
-			Path:   "/v1/user/group",
-			Method: "PATCH",
-		},
-		{
-			Group:  "UserGroup",
-			Path:   "/v1/user/group/add",
-			Method: "POST",
-		},
-		{
-			Group:  "UserGroup",
-			Path:   "/v1/user/group/list",
-			Method: "POST",
-		},
-		{
-			Group:  "Instance",
-			Path:   "/v1/instance",
-			Method: "POST",
-		},
-		{
-			Group:  "Instance",
-			Path:   "/v1/instance",
-			Method: "DELETE",
-		},
-		{
-			Group:  "Instance",
-			Path:   "/v1/instance",
-			Method: "PATCH",
-		},
-		{
-			Group:  "Instance",
-			Path:   "/v1/instance/list",
-			Method: "POST",
-		},
-		{
-			Group:  "Instance",
-			Path:   "/v1/instance/add",
-			Method: "POST",
-		},
-		{
-			Group:  "Instance",
-			Path:   "/v1/instance/ping",
-			Method: "POST",
 		},
 	}
 
@@ -177,7 +106,7 @@ func insertApi() error {
 	return nil
 }
 
-// 一级菜单100, 二级菜单在父ID后面+1,示例1001，依次类推，所以一个等级菜单最多9个
+// 一级菜单00、二级菜单00、三级菜单00
 func insertMenu() error {
 	table := []model.Menu{
 		{
@@ -189,7 +118,39 @@ func insertMenu() error {
 				Title: "首页",
 				Icon:  "HomeFilled",
 			},
-			Sort: 100,
+			Sort: 1,
+		},
+		{
+			ParentID:  "0",
+			Name:      "SQLQuery",
+			Path:      "sql",
+			Component: "views/sql/index.vue",
+			Meta: model.Meta{
+				Title: "SQL查询",
+				Icon:  "Search",
+			},
+			Sort: 2,
+		},
+		{
+			ParentID:  "0",
+			Name:      "Instance",
+			Path:      "instance",
+			Component: "views/instance/index.vue",
+			Meta: model.Meta{
+				Title: "实例管理",
+				Icon:  "Menu",
+			},
+			Sort: 3,
+		},
+		{
+			ParentID:  "3",
+			Name:      "InstanceList",
+			Path:      "list",
+			Component: "views/instance/InstanceList/index.vue",
+			Meta: model.Meta{
+				Title: "实例列表",
+			},
+			Sort: 301,
 		},
 		{
 			ParentID:  "0",
@@ -200,37 +161,37 @@ func insertMenu() error {
 				Title: "用户中心",
 				Icon:  "User",
 			},
-			Sort: 101,
+			Sort: 4,
 		},
 		{
-			ParentID:  "101",
+			ParentID:  "4",
 			Name:      "UserList",
 			Path:      "list",
 			Component: "views/user/UserList/index.vue",
 			Meta: model.Meta{
 				Title: "用户管理",
 			},
-			Sort: 1011,
+			Sort: 401,
 		},
 		{
-			ParentID:  "101",
+			ParentID:  "4",
 			Name:      "UserRole",
 			Path:      "role",
 			Component: "views/user/UserRole/index.vue",
 			Meta: model.Meta{
 				Title: "角色管理",
 			},
-			Sort: 1012,
+			Sort: 402,
 		},
 		{
-			ParentID:  "101",
+			ParentID:  "4",
 			Name:      "UserGroup",
 			Path:      "group",
 			Component: "views/user/UserGroup/index.vue",
 			Meta: model.Meta{
 				Title: "用户组管理",
 			},
-			Sort: 1013,
+			Sort: 403,
 		},
 	}
 

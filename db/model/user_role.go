@@ -17,8 +17,27 @@ type UserRole struct {
 // RoleMenuRelation have better scalability
 type RoleMenuRelation struct {
 	Model
-	RoleID uint `json:"roleId" gorm:"column:role_id;not null;"`
-	MenuID uint `json:"menuId" gorm:"column:menu_id;not null;"`
+	RoleID uint `json:"roleId" gorm:"column:role_id;not null;uniqueIndex:idx_role_menu"`
+	MenuID uint `json:"menuId" gorm:"column:menu_id;not null;uniqueIndex:idx_role_menu"`
+}
+
+func CreateRoleMenuRelations(roleID uint, menuIDs []uint) error {
+	db := config.DB
+	db = db.Begin()
+
+	for _, menuID := range menuIDs {
+		relation := RoleMenuRelation{
+			RoleID: roleID,
+			MenuID: menuID,
+		}
+		if result := db.Create(&relation); result.Error != nil {
+			db.Rollback()
+			return result.Error
+		}
+	}
+
+	db.Commit()
+	return nil
 }
 
 func (r *UserRole) addDefaultRolePermission() error {
@@ -53,10 +72,10 @@ func (r *UserRole) CreateRole() error {
 	}
 
 	// Add default permission for the new role.
-	err := r.addDefaultRolePermission()
-	if err != nil {
-		return err
-	}
+	//err := r.addDefaultRolePermission()
+	//if err != nil {
+	//	return err
+	//}
 
 	return nil
 }
@@ -74,6 +93,13 @@ func (r *UserRole) DeleteRole() error {
 		return err
 	}
 
+	// Clear all RoleMenuRelation
+	err = tx.Where("role_id = ?", r.ID).Delete(&RoleMenuRelation{}).Error
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
 	// Then, delete the role itself
 	result := tx.Delete(&r)
 	if result.Error != nil {
@@ -82,11 +108,11 @@ func (r *UserRole) DeleteRole() error {
 	}
 
 	// Delete the casbin rules associated with the role
-	err = tx.Where("v0 = ?", r.Name).Delete(&gormadapter.CasbinRule{}).Error
-	if err != nil {
-		tx.Rollback()
-		return err
-	}
+	//err = tx.Where("v0 = ?", r.Name).Delete(&gormadapter.CasbinRule{}).Error
+	//if err != nil {
+	//	tx.Rollback()
+	//	return err
+	//}
 
 	// If everything went well, commit the transaction
 	tx.Commit()
@@ -94,6 +120,7 @@ func (r *UserRole) DeleteRole() error {
 	return nil
 }
 
+// GetRoleNames 返回所有角色信息
 func (r *UserRole) GetRoleNames() ([]string, error) {
 	db := config.DB
 
@@ -111,6 +138,7 @@ func (r *UserRole) GetRoleNames() ([]string, error) {
 	return roleNames, nil
 }
 
+// GetRoleName 返回指定角色信息
 func (r *UserRole) GetRoleName(name string) (*UserRole, error) {
 	var role UserRole
 	db := config.DB

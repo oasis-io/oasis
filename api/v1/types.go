@@ -31,6 +31,15 @@ type UserRes struct {
 	Roles    []RoleResponse `json:"roles"`
 }
 
+type MenuRequest struct {
+	Name  string       `json:"name"`
+	Menus []model.Menu `json:"menus"`
+}
+
+type RoleRequest struct {
+	Name string `json:"name"`
+}
+
 type RoleResponse struct {
 	Name string `json:"name"`
 }

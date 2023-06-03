@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"oasis/app/response"
@@ -14,7 +15,13 @@ type MenuResponse struct {
 	Menus []model.Menu `json:"menus"`
 }
 
-func GetMenu(c *gin.Context) {
+type MenuApiResponse struct {
+	Api []model.Api `json:"apis"`
+}
+
+// GetMenuTree 返回用户的所有菜单栏
+// admin管理员直接返回所有菜单
+func GetMenuTree(c *gin.Context) {
 	username, err := utils.GetTokenUserName(c)
 	if err != nil {
 		response.Error(c, "解析token错误")
@@ -47,27 +54,14 @@ func GetMenu(c *gin.Context) {
 	roles := foundUser.Roles
 	var menus []model.Menu
 	for _, role := range roles {
-		// 成功得到角色名
-		log.Info(role.Name)
-		casbinRules, err := db.GetCasbinRulesByRole(role.Name)
+		// 查询角色关联的菜单信息
+		menus, err = db.GetMenuTreeMapForRole(role.Name)
 		if err != nil {
+			log.Error("获取菜单失败!", zap.Error(err))
 			response.Error(c, err.Error())
 			return
 		}
 
-		// 成功得到API
-		roleAPIs := make(map[string]struct{})
-		for _, rule := range casbinRules {
-
-			roleAPIs[rule.V1] = struct{}{}
-			log.Info(rule.V1)
-		}
-
-		for _, menu := range allMenus {
-			if _, ok := roleAPIs[menu.Path]; ok {
-				menus = append(menus, menu)
-			}
-		}
 	}
 
 	response.SendSuccessData(c, "获取菜单成功", MenuResponse{
@@ -75,11 +69,79 @@ func GetMenu(c *gin.Context) {
 	})
 }
 
-func contains(slice []string, item string) bool {
-	for _, a := range slice {
-		if a == item {
-			return true
-		}
+// GetBaseMenuTree 前端设置权限需要返回菜单信息
+func GetBaseMenuTree(c *gin.Context) {
+	allMenus, err := db.GetMenuTreeMap()
+	if err != nil {
+		log.Error("获取菜单失败!", zap.Error(err))
+		response.Error(c, err.Error())
+		return
 	}
-	return false
+
+	response.SendSuccessData(c, "获取菜单成功", MenuResponse{
+		Menus: allMenus,
+	})
+}
+
+func MenuPermissions(c *gin.Context) {
+	var req MenuRequest
+
+	if err := c.ShouldBindJSON(&req); err != nil {
+		response.Error(c, err.Error())
+		return
+	}
+
+	role, err := (&model.UserRole{}).GetRoleName(req.Name)
+	if err != nil {
+		response.Error(c, fmt.Sprintf("Unable to get role ID for name: %s", req.Name))
+		return
+	}
+
+	menuIDs := make([]uint, len(req.Menus))
+	for i, menu := range req.Menus {
+		menuIDs[i] = menu.ID
+	}
+
+	roleID := role.ID
+	if err := model.CreateRoleMenuRelations(roleID, menuIDs); err != nil {
+		response.Error(c, fmt.Sprintf("Unable to create role-menu relations: %v", err))
+		return
+	}
+
+	response.Success(c)
+}
+
+func GetBaseMenuApi(c *gin.Context) {
+	api := model.Api{}
+	allApi, err := api.GetAllApi()
+	if err != nil {
+		log.Error("获取菜单API失败!", zap.Error(err))
+		response.Error(c, err.Error())
+		return
+	}
+
+	response.SendSuccessData(c, "获取菜单API成功", MenuApiResponse{
+		Api: allApi,
+	})
+}
+
+func GetMenuAuthorized(c *gin.Context) {
+	var req RoleRequest
+
+	if err := c.ShouldBindJSON(&req); err != nil {
+		response.Error(c, err.Error())
+		return
+	}
+
+	// 查询角色关联的菜单信息
+	menus, err := db.GetMenuTreeMapForRole(req.Name)
+	if err != nil {
+		log.Error("获取菜单失败!", zap.Error(err))
+		response.Error(c, err.Error())
+		return
+	}
+
+	response.SendSuccessData(c, "获取菜单成功", MenuResponse{
+		Menus: menus,
+	})
 }

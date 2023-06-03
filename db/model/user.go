@@ -92,62 +92,6 @@ func (u *User) UpdateRoles(roles []string) error {
 	return tx.Commit().Error
 }
 
-//func (u *User) UpdateUser() error {
-//	db := config.DB
-//
-//	updates := make(map[string]interface{})
-//
-//	//updates["email"] = u.Email
-//	//updates["phone"] = u.Phone
-//	if u.Password != "" {
-//		// 对新密码进行加密
-//		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)
-//		if err != nil {
-//			return err
-//		}
-//		updates["password"] = string(hashedPassword)
-//	}
-//
-//	if err := db.Model(u).Where("username = ?", u.Username).Updates(updates).Error; err != nil {
-//		return err
-//	}
-//
-//	return nil
-//}
-//
-//// UpdateRoles 更新用户的角色
-//func (u *User) UpdateRoles(roles []string) error {
-//	db := config.DB
-//	var userRoles []*UserRole
-//
-//	// 查找所有的角色
-//	if err := db.Where("name IN ?", roles).Find(&userRoles).Error; err != nil {
-//		return err
-//	}
-//
-//	// 获取用户对象
-//	var user User
-//	if err := db.Where("username = ?", u.Username).First(&user).Error; err != nil {
-//		return err
-//	}
-//
-//	// 获取用户的角色关联对象
-//	association := db.Model(&user).Association("Roles")
-//	//// 判断关联表是否已经有数据
-//	//count := association.Count()
-//	//if count > 0 {
-//	//	// 如果关联表已经有数据，直接返回
-//	//	return nil
-//	//}
-//
-//	// 更新用户的角色
-//	if err := association.Replace(userRoles); err != nil {
-//		return err
-//	}
-//
-//	return nil
-//}
-
 func (u *User) CreateUser() error {
 	db := config.DB
 

@@ -183,38 +183,6 @@ func UpdateUser(c *gin.Context) {
 	response.Success(c)
 }
 
-//func UpdateUser(c *gin.Context) {
-//	var req UserRequest
-//
-//	if err := c.ShouldBindJSON(&req); err != nil {
-//		log.Error("parameter binding errors: " + err.Error())
-//		response.Error(c, "parameter binding errors")
-//		return
-//	}
-//
-//	user := model.User{
-//		Username: req.Username,
-//		Email:    req.Email,
-//		Phone:    req.Phone,
-//		Password: req.Password,
-//	}
-//
-//	if err := user.UpdateUser(); err != nil {
-//		log.Error("database update error：" + err.Error())
-//		response.Error(c, "database update error")
-//		return
-//	}
-//
-//	// 更新用户的角色
-//	if err := user.UpdateRoles(req.Roles); err != nil {
-//		log.Error("database update error：" + err.Error())
-//		response.Error(c, "database update error")
-//		return
-//	}
-//
-//	response.Success(c)
-//}
-
 func DeleteUser(c *gin.Context) {
 	var req model.User
 

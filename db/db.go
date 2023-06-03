@@ -63,6 +63,29 @@ func openInstance() (*gorm.DB, error) {
 	return nil, nil
 }
 
+// Login 登陆验证
+func Login(username, password string) (*model.User, error) {
+	db := config.DB
+
+	user := model.User{}
+
+	// 根据用户名查询用户记录
+	err := db.Where("username = ?", username).First(&user).Error
+	if err != nil {
+		log.Error("获取用户错误", zap.Error(err))
+		return nil, err
+	}
+
+	// 验证密码
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+	if err != nil {
+		log.Error("密码校验失败", zap.Error(err))
+		return nil, err
+	}
+
+	return &user, nil
+}
+
 func GetMenuTree() ([]model.Menu, error) {
 	var menus []model.Menu
 	// 获取所有的菜单项
@@ -94,26 +117,40 @@ func buildMenuTree(menus []model.Menu, parentId string) []model.Menu {
 	return result
 }
 
-func Login(username, password string) (*model.User, error) {
+func GetMenuTreeMap() ([]model.Menu, error) {
+	var menus []model.Menu
+
+	// 获取所有的菜单项
 	db := config.DB
-
-	user := model.User{}
-
-	// 根据用户名查询用户记录
-	err := db.Where("username = ?", username).First(&user).Error
-	if err != nil {
-		log.Error("获取用户错误", zap.Error(err))
+	if err := db.Find(&menus).Error; err != nil {
 		return nil, err
 	}
 
-	// 验证密码
-	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
-	if err != nil {
-		log.Error("密码校验失败", zap.Error(err))
-		return nil, err
+	// 将菜单按父级ID分类到一个map中
+	menuMap := make(map[string][]model.Menu)
+	for _, menu := range menus {
+		menuMap[menu.ParentID] = append(menuMap[menu.ParentID], menu)
 	}
 
-	return &user, nil
+	// 构建菜单树
+	return buildMenuTreeWithMap(menuMap, "0"), nil
+}
+
+func buildMenuTreeWithMap(menuMap map[string][]model.Menu, parentId string) []model.Menu {
+	var result []model.Menu
+
+	for _, menu := range menuMap[parentId] {
+		children := buildMenuTreeWithMap(menuMap, fmt.Sprintf("%d", menu.Sort))
+		menu.Children = children
+		result = append(result, menu)
+	}
+
+	// 对子菜单进行排序
+	sort.Slice(result, func(i, j int) bool {
+		return result[i].Sort < result[j].Sort
+	})
+
+	return result
 }
 
 func GetCasbinRulesByRole(roleName string) ([]gormadapter.CasbinRule, error) {
@@ -124,5 +161,40 @@ func GetCasbinRulesByRole(roleName string) ([]gormadapter.CasbinRule, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return rules, nil
+}
+
+// GetMenuTreeMapForRole 通过角色名查询该角色拥有的菜单
+func GetMenuTreeMapForRole(roleName string) ([]model.Menu, error) {
+	var role model.UserRole
+	var menus []model.Menu
+
+	// 获取角色
+	if err := config.DB.Where("name = ?", roleName).First(&role).Error; err != nil {
+		return nil, err
+	}
+
+	// 获取角色关联的菜单ID
+	var relation []model.RoleMenuRelation
+	if err := config.DB.Where("role_id = ?", role.ID).Find(&relation).Error; err != nil {
+		return nil, err
+	}
+
+	// 获取这些菜单的信息
+	menuIDs := make([]uint, len(relation))
+	for i, r := range relation {
+		menuIDs[i] = r.MenuID
+	}
+	if err := config.DB.Where("id IN ?", menuIDs).Find(&menus).Error; err != nil {
+		return nil, err
+	}
+
+	// 构建菜单树
+	menuMap := make(map[string][]model.Menu)
+	for _, menu := range menus {
+		menuMap[menu.ParentID] = append(menuMap[menu.ParentID], menu)
+	}
+
+	return buildMenuTreeWithMap(menuMap, "0"), nil
 }
