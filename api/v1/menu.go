@@ -83,11 +83,13 @@ func GetBaseMenuTree(c *gin.Context) {
 	})
 }
 
+// MenuPermissions 添加角色关联的菜单
 func MenuPermissions(c *gin.Context) {
 	var req MenuRequest
 
 	if err := c.ShouldBindJSON(&req); err != nil {
-		response.Error(c, err.Error())
+		log.Error("parameter binding errors: " + err.Error())
+		response.Error(c, "parameter binding errors")
 		return
 	}
 
@@ -105,6 +107,25 @@ func MenuPermissions(c *gin.Context) {
 	roleID := role.ID
 	if err := model.CreateRoleMenuRelations(roleID, menuIDs); err != nil {
 		response.Error(c, fmt.Sprintf("Unable to create role-menu relations: %v", err))
+		return
+	}
+
+	response.Success(c)
+}
+
+// MenuApiPermissions 添加角色关联的API权限并插入casbin_rule表
+func MenuApiPermissions(c *gin.Context) {
+	var req MenuRequest
+
+	if err := c.ShouldBindJSON(&req); err != nil {
+		log.Error("parameter binding errors: " + err.Error())
+		response.Error(c, "parameter binding errors")
+		return
+	}
+
+	err := db.AddApiPermissions(req.Name, req.Apis)
+	if err != nil {
+		response.Error(c, err.Error())
 		return
 	}
 
@@ -129,7 +150,8 @@ func GetMenuAuthorized(c *gin.Context) {
 	var req RoleRequest
 
 	if err := c.ShouldBindJSON(&req); err != nil {
-		response.Error(c, err.Error())
+		log.Error("parameter binding errors: " + err.Error())
+		response.Error(c, "parameter binding errors")
 		return
 	}
 
@@ -143,5 +165,24 @@ func GetMenuAuthorized(c *gin.Context) {
 
 	response.SendSuccessData(c, "获取菜单成功", MenuResponse{
 		Menus: menus,
+	})
+}
+
+func GetMenuApiAuthorized(c *gin.Context) {
+	var req RoleRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		log.Error("parameter binding errors: " + err.Error())
+		response.Error(c, "parameter binding errors")
+		return
+	}
+
+	apis, err := db.GetApisByRole(req.Name)
+	if err != nil {
+		response.Error(c, err.Error())
+		return
+	}
+
+	response.SendSuccessData(c, "获取菜单API成功", MenuApiResponse{
+		Api: apis,
 	})
 }

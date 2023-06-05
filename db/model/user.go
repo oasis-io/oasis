@@ -62,6 +62,30 @@ func (u *User) UpdateUser() error {
 	return nil
 }
 
+func (u *User) UpdateUserPassword() error {
+	db := config.DB
+	updates := map[string]interface{}{
+		"password": u.Password,
+	}
+
+	if u.Password != "" {
+		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)
+		if err != nil {
+			return err
+		}
+		updates["password"] = string(hashedPassword)
+	}
+
+	result := db.Model(&User{}).Where("username = ?", u.Username).Updates(updates)
+	if result.Error != nil {
+		return result.Error
+	}
+	if result.RowsAffected == 0 {
+		return errors.New("user not found")
+	}
+	return nil
+}
+
 func (u *User) UpdateRoles(roles []string) error {
 	db := config.DB
 	var userRoles []*UserRole
@@ -101,10 +125,9 @@ func (u *User) CreateUser() error {
 		return err
 	}
 
-	// 使用加密后的密码替换原始密码
 	u.Password = string(hashedPassword)
 
-	// 创建用户记录
+	// 创建用户
 	result := db.Create(&u)
 	if result.Error != nil {
 		return result.Error

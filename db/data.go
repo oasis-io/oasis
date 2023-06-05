@@ -88,7 +88,7 @@ func insertApi() error {
 		{
 			Group:  "用户管理",
 			Desc:   "查询用户信息",
-			Path:   "/v1/user/info",
+			Path:   "/v1/user",
 			Method: "GET",
 		},
 	}

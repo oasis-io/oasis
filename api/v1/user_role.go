@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"oasis/app/response"
 	"oasis/db/model"
+	"oasis/pkg/log"
 )
 
 func GetRoleList(c *gin.Context) {
@@ -11,7 +12,8 @@ func GetRoleList(c *gin.Context) {
 	var roleRes []RoleResponse
 
 	if err := c.ShouldBindJSON(&req); err != nil {
-		response.Error(c, err.Error())
+		log.Error("parameter binding errors: " + err.Error())
+		response.Error(c, "parameter binding errors")
 		return
 	}
 
@@ -31,6 +33,7 @@ func GetRoleList(c *gin.Context) {
 		roleRes = append(roleRes,
 			RoleResponse{
 				Name: v.Name,
+				Desc: v.Desc,
 			})
 	}
 
@@ -66,12 +69,14 @@ func CreateRole(c *gin.Context) {
 	var req model.UserRole
 
 	if err := c.ShouldBindJSON(&req); err != nil {
-		response.Error(c, err.Error())
+		log.Error("parameter binding errors: " + err.Error())
+		response.Error(c, "parameter binding errors")
 		return
 	}
 
 	role := model.UserRole{
 		Name: req.Name,
+		Desc: req.Desc,
 	}
 
 	err := role.CreateRole()
@@ -94,7 +99,8 @@ func DeleteRole(c *gin.Context) {
 	var req model.UserRole
 
 	if err := c.ShouldBindJSON(&req); err != nil {
-		response.Error(c, err.Error())
+		log.Error("parameter binding errors: " + err.Error())
+		response.Error(c, "parameter binding errors")
 		return
 	}
 

@@ -34,7 +34,8 @@ func GetUserList(c *gin.Context) {
 	var userRes []UserRes
 
 	if err := c.ShouldBindJSON(&req); err != nil {
-		response.Error(c, err.Error())
+		log.Error("parameter binding errors: " + err.Error())
+		response.Error(c, "parameter binding errors")
 		return
 	}
 
@@ -77,7 +78,8 @@ func GetUser(c *gin.Context) {
 	var userRes []UserRes
 
 	if err := c.ShouldBindJSON(&req); err != nil {
-		response.Error(c, err.Error())
+		log.Error("parameter binding errors: " + err.Error())
+		response.Error(c, "parameter binding errors")
 		return
 	}
 
@@ -118,7 +120,8 @@ func CreateUser(c *gin.Context) {
 	}
 
 	if err := c.ShouldBindJSON(&req); err != nil {
-		response.Error(c, err.Error())
+		log.Error("parameter binding errors: " + err.Error())
+		response.Error(c, "parameter binding errors")
 		return
 	}
 
@@ -133,6 +136,14 @@ func CreateUser(c *gin.Context) {
 			}
 			roles = append(roles, role)
 		}
+	} else {
+		// 默认添加CONNECT角色
+		defaultRole, err := new(model.UserRole).GetRoleName("CONNECT")
+		if err != nil {
+			response.Error(c, "Default role CONNECT not found")
+			return
+		}
+		roles = append(roles, defaultRole)
 	}
 
 	user := model.User{
@@ -183,11 +194,35 @@ func UpdateUser(c *gin.Context) {
 	response.Success(c)
 }
 
+func UpdateUserPassword(c *gin.Context) {
+	var req UserRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		log.Error("parameter binding errors: " + err.Error())
+		response.Error(c, "parameter binding errors")
+		return
+	}
+
+	user := model.User{
+		Username: req.Username,
+		Password: req.Password,
+	}
+
+	if err := user.UpdateUserPassword(); err != nil {
+		log.Error("database update error：" + err.Error())
+		response.Error(c, "database update error")
+		return
+	}
+
+	response.Success(c)
+
+}
+
 func DeleteUser(c *gin.Context) {
 	var req model.User
 
 	if err := c.ShouldBindJSON(&req); err != nil {
-		response.Error(c, err.Error())
+		log.Error("parameter binding errors: " + err.Error())
+		response.Error(c, "parameter binding errors")
 		return
 	}
 

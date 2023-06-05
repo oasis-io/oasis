@@ -7,6 +7,7 @@ import (
 	"oasis/db"
 	"oasis/db/model"
 	"oasis/pkg/jwt"
+	"oasis/pkg/log"
 )
 
 type LoginResponse struct {
@@ -20,7 +21,8 @@ func Login(c *gin.Context) {
 	var claims jwt.CustomClaims
 
 	if err := c.ShouldBindJSON(&req); err != nil {
-		response.Error(c, err.Error())
+		log.Error("parameter binding errors: " + err.Error())
+		response.Error(c, "parameter binding errors")
 		return
 	}
 

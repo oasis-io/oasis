@@ -39,8 +39,10 @@ func HttpRequests() {
 		v1Router.POST("/menu", v1.GetMenuTree)
 		v1Router.POST("/menu/getBaseMenuTree", v1.GetBaseMenuTree)
 		v1Router.POST("/menu/permissions", v1.MenuPermissions)
+		v1Router.POST("/menu/api", v1.MenuApiPermissions)
 		v1Router.POST("/menu/getBaseMenuApi", v1.GetBaseMenuApi)
 		v1Router.POST("/menu/getMenuAuthorized", v1.GetMenuAuthorized)
+		v1Router.POST("/menu/getMenuApiAuthorized", v1.GetMenuApiAuthorized)
 
 		// Instance
 		v1Router.POST("/instance", v1.GetInstance)
@@ -54,9 +56,10 @@ func HttpRequests() {
 		v1Router.POST("/user", v1.GetUser)
 		v1Router.DELETE("/user", v1.DeleteUser)
 		v1Router.PATCH("/user", v1.UpdateUser)
+		v1Router.PATCH("/user/password", v1.UpdateUserPassword)
 		v1Router.POST("/user/add", v1.CreateUser)
 		v1Router.POST("/user/list", v1.GetUserList)
-		v1Router.GET("/user/info", v1.GetUserInfo)
+		v1Router.GET("/user", v1.GetUserInfo)
 
 		// User Role
 		v1Router.GET("/user/role", v1.GetRoles)

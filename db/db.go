@@ -11,6 +11,7 @@ import (
 	"oasis/db/model"
 	"oasis/pkg/log"
 	"sort"
+	"strings"
 )
 
 func OpenOasis() (*gorm.DB, error) {
@@ -153,18 +154,6 @@ func buildMenuTreeWithMap(menuMap map[string][]model.Menu, parentId string) []mo
 	return result
 }
 
-func GetCasbinRulesByRole(roleName string) ([]gormadapter.CasbinRule, error) {
-	var rules []gormadapter.CasbinRule
-
-	db := config.DB
-	err := db.Where("v0 = ?", roleName).Find(&rules).Error
-	if err != nil {
-		return nil, err
-	}
-
-	return rules, nil
-}
-
 // GetMenuTreeMapForRole 通过角色名查询该角色拥有的菜单
 func GetMenuTreeMapForRole(roleName string) ([]model.Menu, error) {
 	var role model.UserRole
@@ -197,4 +186,65 @@ func GetMenuTreeMapForRole(roleName string) ([]model.Menu, error) {
 	}
 
 	return buildMenuTreeWithMap(menuMap, "0"), nil
+}
+
+func AddApiPermissions(roleName string, apis []model.Api) error {
+	var permissions []gormadapter.CasbinRule
+
+	for _, api := range apis {
+		if api.Path != "" && api.Method != "" {
+			permission := gormadapter.CasbinRule{
+				Ptype: "p",
+				V0:    strings.ToUpper(roleName),
+				V1:    api.Path,
+				V2:    api.Method,
+			}
+			permissions = append(permissions, permission)
+		}
+	}
+
+	db := config.DB
+
+	for _, permission := range permissions {
+		result := db.Create(&permission)
+		if result.Error != nil {
+			return result.Error
+		}
+	}
+
+	return nil
+}
+
+func GetApisByRole(roleName string) ([]model.Api, error) {
+	// Query Role ID
+	var role model.UserRole
+	if err := config.DB.Where("name = ?", roleName).First(&role).Error; err != nil {
+		return nil, err
+	}
+
+	// Query related permissions
+	var permissions []gormadapter.CasbinRule
+	if err := config.DB.Where("v0 = ?", strings.ToUpper(role.Name)).Find(&permissions).Error; err != nil {
+		return nil, err
+	}
+
+	// Query all APIs
+	apiModel := &model.Api{}
+	allApis, err := apiModel.GetAllApi()
+	if err != nil {
+		return nil, err
+	}
+
+	// Convert to API format
+	var apis []model.Api
+	for _, api := range allApis {
+		for _, permission := range permissions {
+			// If the API path and method matches with permission, append it to the list
+			if api.Path == permission.V1 && api.Method == permission.V2 {
+				apis = append(apis, api)
+			}
+		}
+	}
+
+	return apis, nil
 }
