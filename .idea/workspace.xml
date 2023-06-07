@@ -5,16 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="771fb103-1b86-47b3-932e-a6713078e0ea" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/api/v1/sql.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/v1/login.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/v1/login.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/v1/menu.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/v1/menu.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/v1/types.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/v1/types.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/v1/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/v1/user.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/v1/user_role.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/v1/user_role.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/router.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/data.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/data.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/db.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/db.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/model/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/model/user.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,14 +65,6 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
-      <module name="oasis" />
-      <working_directory value="$PROJECT_DIR$" />
-      <kind value="FILE" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <method v="2" />
-    </configuration>
     <configuration name="go build user.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="oasis" />
       <working_directory value="$PROJECT_DIR$" />
@@ -87,15 +72,6 @@
       <package value="oasis" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$/api/v1/user.go" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
-      <module name="oasis" />
-      <working_directory value="$PROJECT_DIR$" />
-      <kind value="DIRECTORY" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <framework value="gotest" />
       <method v="2" />
     </configuration>
   </component>

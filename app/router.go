@@ -44,6 +44,9 @@ func HttpRequests() {
 		v1Router.POST("/menu/getMenuAuthorized", v1.GetMenuAuthorized)
 		v1Router.POST("/menu/getMenuApiAuthorized", v1.GetMenuApiAuthorized)
 
+		// SQL Query
+		v1Router.POST("/sql/query", v1.GetSqlQueryData)
+
 		// Instance
 		v1Router.POST("/instance", v1.GetInstance)
 		v1Router.DELETE("/instance", v1.DeleteInstance)
