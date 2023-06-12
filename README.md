@@ -5,10 +5,10 @@
 简体中文 | [English](README_en.md)
 
 ### 介绍
-
-  基于Kubernetes 来部署和维护数据库实例。它提供以下功能：
+  Oasis 提供对MySQL 数据库全生命周期的管理。基于Kubernetes 来部署数据库实例，并提供对数据库的维护。它提供以下功能：
 
 * Kubernetes 部署MySQL
+* MySQL 高可用管理
 * SQL 审核和查询
 * 数据迁移
 * 数据库实例管理

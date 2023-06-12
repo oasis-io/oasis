@@ -122,6 +122,27 @@ func insertMenu() error {
 		},
 		{
 			ParentID:  "0",
+			Name:      "K8S",
+			Path:      "k8s",
+			Component: "views/k8s/index.vue",
+			Meta: model.Meta{
+				Title: "K8S平台",
+				Icon:  "ElementPlus",
+			},
+			Sort: 2,
+		},
+		{
+			ParentID:  "2",
+			Name:      "Application",
+			Path:      "app",
+			Component: "views/k8s/App/index.vue",
+			Meta: model.Meta{
+				Title: "应用部署",
+			},
+			Sort: 201,
+		},
+		{
+			ParentID:  "0",
 			Name:      "SQLQuery",
 			Path:      "sql",
 			Component: "views/sql/index.vue",
@@ -129,7 +150,7 @@ func insertMenu() error {
 				Title: "SQL查询",
 				Icon:  "Search",
 			},
-			Sort: 2,
+			Sort: 3,
 		},
 		{
 			ParentID:  "0",
@@ -140,17 +161,17 @@ func insertMenu() error {
 				Title: "实例管理",
 				Icon:  "Menu",
 			},
-			Sort: 3,
+			Sort: 4,
 		},
 		{
-			ParentID:  "3",
+			ParentID:  "4",
 			Name:      "InstanceList",
 			Path:      "list",
 			Component: "views/instance/InstanceList/index.vue",
 			Meta: model.Meta{
 				Title: "实例列表",
 			},
-			Sort: 301,
+			Sort: 401,
 		},
 		{
 			ParentID:  "0",
@@ -161,37 +182,37 @@ func insertMenu() error {
 				Title: "用户中心",
 				Icon:  "User",
 			},
-			Sort: 4,
+			Sort: 5,
 		},
 		{
-			ParentID:  "4",
+			ParentID:  "5",
 			Name:      "UserList",
 			Path:      "list",
 			Component: "views/user/UserList/index.vue",
 			Meta: model.Meta{
 				Title: "用户管理",
 			},
-			Sort: 401,
+			Sort: 501,
 		},
 		{
-			ParentID:  "4",
+			ParentID:  "5",
 			Name:      "UserRole",
 			Path:      "role",
 			Component: "views/user/UserRole/index.vue",
 			Meta: model.Meta{
 				Title: "角色管理",
 			},
-			Sort: 402,
+			Sort: 502,
 		},
 		{
-			ParentID:  "4",
+			ParentID:  "5",
 			Name:      "UserGroup",
 			Path:      "group",
 			Component: "views/user/UserGroup/index.vue",
 			Meta: model.Meta{
 				Title: "用户组管理",
 			},
-			Sort: 403,
+			Sort: 503,
 		},
 	}
 

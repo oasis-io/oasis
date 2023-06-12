@@ -31,6 +31,22 @@ type UserRes struct {
 	Roles    []RoleResponse `json:"roles"`
 }
 
+type GroupRes struct {
+	ID    uint           `json:"id"`
+	Name  string         `json:"name"`
+	Desc  string         `json:"desc"`
+	Users []UserRes      `json:"users"`
+	Roles []RoleResponse `json:"roles"`
+}
+
+type GroupRequest struct {
+	ID    uint     `json:"id"`
+	Name  string   `json:"name"`
+	Desc  string   `json:"desc"`
+	Users []string `json:"users"`
+	Roles []string `json:"roles"`
+}
+
 type MenuRequest struct {
 	Name  string       `json:"name"`
 	Apis  []model.Api  `json:"apis"`
@@ -42,6 +58,11 @@ type RoleRequest struct {
 }
 
 type RoleResponse struct {
+	Name string `json:"name"`
+	Desc string `json:"desc"`
+}
+
+type GroupResponse struct {
 	Name string `json:"name"`
 	Desc string `json:"desc"`
 }

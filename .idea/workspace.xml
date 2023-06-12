@@ -5,9 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="771fb103-1b86-47b3-932e-a6713078e0ea" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/api/v1/sql.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README_en.md" beforeDir="false" afterPath="$PROJECT_DIR$/README_en.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/v1/types.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/v1/types.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/v1/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/v1/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/v1/user_group.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/v1/user_group.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/router.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/data.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/data.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/model/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/model/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/model/user_group.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/model/user_group.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/model/user_role.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/model/user_role.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

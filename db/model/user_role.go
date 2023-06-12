@@ -160,10 +160,15 @@ func (r *UserRole) GetRoleList(pageSize, currentPage int) ([]UserRole, int64, er
 	limit := pageSize
 	offset := pageSize * (currentPage - 1)
 
-	db.Limit(limit).Offset(offset).Find(&roleList)
+	result := db.Limit(limit).Offset(offset).Find(&roleList)
+	if result.Error != nil {
+		return nil, 0, result.Error
+	}
 
 	// 获取总记录数
-	db.Model(&UserRole{}).Count(&count)
-
+	result = db.Model(&UserRole{}).Count(&count)
+	if result.Error != nil {
+		return nil, 0, result.Error
+	}
 	return roleList, count, nil
 }

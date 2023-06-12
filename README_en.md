@@ -6,9 +6,10 @@ English | [简体中文](README.md)
 
 ### Introduction
 
-  Deploy and maintain database instances based on Kubernetes. It provides the following functions:
+  Oasis provides full lifecycle management of MySQL databases. Deploy database instances based on Kubernetes and provide maintenance for the database. It provides the following functions:
 
 * Kubernetes deploy MySQL
+* MySQL HA Management
 * SQL Audit and SQL Query
 * Data migration
 * Database instance management

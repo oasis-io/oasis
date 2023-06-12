@@ -63,6 +63,7 @@ func HttpRequests() {
 		v1Router.POST("/user/add", v1.CreateUser)
 		v1Router.POST("/user/list", v1.GetUserList)
 		v1Router.GET("/user", v1.GetUserInfo)
+		v1Router.GET("/user/all", v1.GetUsers)
 
 		// User Role
 		v1Router.GET("/user/role", v1.GetRoles)

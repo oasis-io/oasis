@@ -113,6 +113,19 @@ func GetUser(c *gin.Context) {
 	})
 }
 
+func GetUsers(c *gin.Context) {
+	user := model.User{}
+	userNames, err := user.GetUserNames()
+	if err != nil {
+		response.Error(c, err.Error())
+		return
+	}
+
+	response.SendSuccessData(c, "获取所有用户成功", PageResponse{
+		Data: userNames,
+	})
+}
+
 func CreateUser(c *gin.Context) {
 	var req struct {
 		model.User

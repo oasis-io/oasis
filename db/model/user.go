@@ -22,6 +22,24 @@ type User struct {
 	UserGroups []*UserGroup `gorm:"many2many:user_group_relation"`
 }
 
+// GetUserNames 返回所有用户信息
+func (u *User) GetUserNames() ([]string, error) {
+	db := config.DB
+
+	var users []User
+	result := db.Select("username").Find(&users)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	var userNames []string
+	for _, user := range users {
+		userNames = append(userNames, user.Username)
+	}
+
+	return userNames, nil
+}
+
 func (u *User) GetUserByUsername() (*User, error) {
 	var user User
 	db := config.DB
