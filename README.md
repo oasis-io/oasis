@@ -34,7 +34,14 @@ CREATE USER  'oasis'@'%' IDENTIFIED BY 'eQWJjZGV1A(MjAxOQo';
 GRANT ALL PRIVILEGES ON oasis.* TO 'oasis'@'%' ; 
 FLUSH PRIVILEGES;
 
-修改oasis.toml配置文件中[mysql]的帐号与密码
+修改配置文件的帐号与密码
+cat oasis.toml
+[mysql]
+user = "oasis"
+host = "127.0.0.1" 
+port = "3306"
+password = "eQWJjZGV1A(MjAxOQo"
+database = "oasis"
 
 启动
 nohup ./oasis -c oasis.toml &
