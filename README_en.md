@@ -27,9 +27,11 @@ bash scripts/build.sh
 ```bash
 CREATE DATABASE IF NOT EXISTS oasis default character set utf8mb4;
 
+
 CREATE USER  'oasis'@'%' IDENTIFIED BY 'eQWJjZGV1A(MjAxOQo';
 GRANT ALL PRIVILEGES ON oasis.* TO 'oasis'@'%' ; 
 FLUSH PRIVILEGES;
+
 
 Modify the account and password of the configuration file
 cat oasis.toml
@@ -39,6 +41,7 @@ host = "127.0.0.1"
 port = "3306"
 password = "eQWJjZGV1A(MjAxOQo"
 database = "oasis"
+
 
 Start
 nohup ./oasis -c oasis.toml &
