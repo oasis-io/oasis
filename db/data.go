@@ -26,7 +26,7 @@ func InsertData() error {
 func insertUser() error {
 	user := model.User{
 		Username: "admin",
-		Password: "123456",
+		Password: "OasisX123",
 	}
 
 	// 查询用户名是否存在
@@ -135,7 +135,7 @@ func insertMenu() error {
 			ParentID:  "2",
 			Name:      "Application",
 			Path:      "app",
-			Component: "views/k8s/App/index.vue",
+			Component: "views/k8s/app/index.vue",
 			Meta: model.Meta{
 				Title: "应用部署",
 			},
@@ -167,7 +167,7 @@ func insertMenu() error {
 			ParentID:  "4",
 			Name:      "InstanceList",
 			Path:      "list",
-			Component: "views/instance/InstanceList/index.vue",
+			Component: "views/instance/instance/index.vue",
 			Meta: model.Meta{
 				Title: "实例列表",
 			},
@@ -188,7 +188,7 @@ func insertMenu() error {
 			ParentID:  "5",
 			Name:      "UserList",
 			Path:      "list",
-			Component: "views/user/UserList/index.vue",
+			Component: "views/user/user/index.vue",
 			Meta: model.Meta{
 				Title: "用户管理",
 			},
@@ -198,7 +198,7 @@ func insertMenu() error {
 			ParentID:  "5",
 			Name:      "UserRole",
 			Path:      "role",
-			Component: "views/user/UserRole/index.vue",
+			Component: "views/user/role/index.vue",
 			Meta: model.Meta{
 				Title: "角色管理",
 			},
@@ -208,7 +208,7 @@ func insertMenu() error {
 			ParentID:  "5",
 			Name:      "UserGroup",
 			Path:      "group",
-			Component: "views/user/UserGroup/index.vue",
+			Component: "views/user/group/index.vue",
 			Meta: model.Meta{
 				Title: "用户组管理",
 			},

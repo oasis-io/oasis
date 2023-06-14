@@ -1,0 +1,1 @@
+import{d as c,o as n,c as r,j as s}from"./index-95ad95c9.js";const m=c({__name:"index",setup(l){const o=()=>{[1,2,3,4,5].forEach((e,a)=>{console.log(`Element ${e} is at position ${a}`)})};return(t,e)=>(n(),r("div",null,[s("button",{onClick:o},"Click me to check")]))}});export{m as default};

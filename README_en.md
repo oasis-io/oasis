@@ -31,6 +31,9 @@ CREATE USER  'oasis'@'%' IDENTIFIED BY 'eQWJjZGV1A(MjAxOQo';
 GRANT ALL PRIVILEGES ON oasis.* TO 'oasis'@'%' ; 
 FLUSH PRIVILEGES;
 
+Modify the account and password of [mysql] in the oasis.toml configuration file
+
+
 nohup ./oasis -c oasis.toml &
 ```
 

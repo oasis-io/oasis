@@ -2,10 +2,13 @@ package config
 
 import (
 	"github.com/spf13/viper"
+	"go.uber.org/zap"
 	"gorm.io/gorm"
+	"oasis/pkg/log"
 )
 
 const (
+	VERSION         = "0.1.0" // Oasis version
 	SetMaxOpenConns = 5
 	SetMaxIdleConns = 3
 )
@@ -56,4 +59,30 @@ func NewConfig() *Config {
 			MaxIdleConn: SetMaxIdleConns,
 		},
 	}
+}
+
+func InitConfig(cfgFile string) error {
+	if cfgFile != "" {
+		// Use config file from the flag.
+		viper.SetConfigFile(cfgFile)
+	} else {
+		viper.AddConfigPath(".")
+		viper.SetConfigType("toml")
+		viper.SetConfigName("oasis")
+
+		// server default value
+		viper.SetDefault("server.bind", "127.0.0.1")
+		viper.SetDefault("server.port", "9590")
+		viper.SetDefault("server.error_log", "./oasis.log")
+		viper.SetDefault("server.access_log", "off")
+		viper.SetDefault("server.access_log_path", "./access.log")
+	}
+
+	// If a config file is found, read it in.
+	if err := viper.ReadInConfig(); err != nil {
+		return err
+	}
+	log.Info("Initialized config file", zap.String("file", viper.ConfigFileUsed()))
+
+	return nil
 }

@@ -1,5 +1,5 @@
 [server]
-bind = "0.0.0.0"
+bind = "127.0.0.1"
 port = "9590"
 error_log = "./oasis.log"
 access_log = "on" # on 开启， off 关闭

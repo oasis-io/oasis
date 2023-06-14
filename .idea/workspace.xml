@@ -5,17 +5,48 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="771fb103-1b86-47b3-932e-a6713078e0ea" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/oasis.toml.example" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/Apis-08af234e.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/Apis-75a6c8f1.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/Menus-0e4a7263.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/Menus-1b16997b.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/el-button-190cf4ea.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/el-checkbox-e117c7b0.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/el-form-item-4ed993c7.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/el-input-0e5f39e7.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/el-table-column-e7a97eab.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/el-tooltip-f394526f.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/el-tree-ffd66896.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/index-0f092566.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/index-16b8d4ae.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/index-2c5a62ad.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/index-3f73f212.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/index-5405e94e.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/index-5936e485.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/index-6204d44d.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/index-7446e514.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/index-771a83df.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/index-924b959d.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/index-95ad95c9.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/index-97513300.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/index-a1669028.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/index-bb8e7d5a.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/index-cc4c5c89.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/index-daf7fb4b.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/index-ddfe993b.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/login-6e0abc61.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/vite.svg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README_en.md" beforeDir="false" afterPath="$PROJECT_DIR$/README_en.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/v1/types.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/v1/types.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/v1/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/v1/user.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/v1/user_group.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/v1/user_group.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/router.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/oasis/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/oasis/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/root.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/root.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db/data.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/data.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/model/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/model/user.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/model/user_group.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/model/user_group.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/model/user_role.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/model/user_role.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/oasis.toml" beforeDir="false" afterPath="$PROJECT_DIR$/oasis.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/build.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/build.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,25 +75,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;DefaultGoTemplateProperty&quot;: &quot;Go File&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
-    &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/oasis/projects/github.com/zhangshaodong/go-demo&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "DefaultGoTemplateProperty": "Go File",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "main",
+    "go.import.settings.migrated": "true",
+    "go.sdk.automatically.set": "true",
+    "last_opened_file_path": "/home/oasis/projects/github.com/zhangshaodong/gin",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/scripts/data" />

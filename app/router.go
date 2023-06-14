@@ -3,25 +3,41 @@ package app
 import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
+	"io"
 	"net/http"
 	v1 "oasis/api/v1"
 	"oasis/config"
 	"oasis/middleware"
 	"oasis/pkg/log"
+	"os"
 )
 
 func HttpRequests() {
-	//gin.DisableConsoleColor()
+	//gin.SetMode(gin.ReleaseMode)
 
-	//accessLog := config.NewConfig().Server.LogAccess
-	//f, _ := os.Create(accessLog)
-	//gin.DefaultWriter = io.MultiWriter(f)
+	accessLog := config.NewConfig().Server.LogAccess
+	if accessLog == "on" {
+		//gin.SetMode(gin.DebugMode)
+		logPath := config.NewConfig().Server.LogAccessPath
+		f, _ := os.Create(logPath)
+		// 将访问log写入文件
+		//gin.DefaultWriter = io.MultiWriter(f)
 
-	// 如果需要同时将日志写入文件和控制台，请使用以下代码。
-	//gin.DefaultWriter = io.MultiWriter(f, os.Stdout)
+		// 如果需要同时将日志写入文件和控制台，请使用以下代码。
+		gin.DefaultWriter = io.MultiWriter(f, os.Stdout)
+	}
 
 	r := gin.Default()
 	r.Use(middleware.Cors())
+
+	// 将前端build后的dist文件复制到web文件夹
+	// gin框架去哪里找static静态文件与index.html模板文件
+	//r.Static("/assets", "./web/dist/assets")
+	//r.LoadHTMLGlob("web/dist/*.html")
+	//
+	//r.GET("/", func(c *gin.Context) {
+	//	c.HTML(http.StatusOK, "index.html", nil)
+	//})
 
 	r.GET("/health", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
