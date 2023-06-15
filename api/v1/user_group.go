@@ -97,9 +97,9 @@ func GetUserGroup(c *gin.Context) {
 // GetUserGroups 获取所有用户组信息
 func GetUserGroups(c *gin.Context) {
 	response.Success(c)
-
 }
 
+// CreateUserGroup 创建一个新的用户组
 func CreateUserGroup(c *gin.Context) {
 	var req struct {
 		model.UserGroup
@@ -152,6 +152,7 @@ func CreateUserGroup(c *gin.Context) {
 	response.Success(c)
 }
 
+// UpdateUserGroup 更新用户组信息以及关联的角色、用户
 func UpdateUserGroup(c *gin.Context) {
 	var req GroupRequest
 
@@ -160,15 +161,6 @@ func UpdateUserGroup(c *gin.Context) {
 		response.Error(c, "parameter binding errors")
 		return
 	}
-
-	// 查询用户组ID
-	//groupInfo := new(model.UserGroup)
-	//userGroup, err := groupInfo.GetGroupByName(req.Name)
-	//if err != nil {
-	//	log.Error("Failed to query user group id: " + err.Error())
-	//	response.Error(c, "Failed to query user group id")
-	//	return
-	//}
 
 	group := model.UserGroup{
 		Model: model.Model{
@@ -180,7 +172,7 @@ func UpdateUserGroup(c *gin.Context) {
 
 	if err := group.UpdateUserGroupByID(); err != nil {
 		log.Error("database update error：" + err.Error())
-		response.Error(c, "database update error")
+		response.Error(c, "database update user group error")
 		return
 	}
 
@@ -193,6 +185,7 @@ func UpdateUserGroup(c *gin.Context) {
 	response.Success(c)
 }
 
+// DeleteUserGroup 删除用户组信息以及用户组关联的用户、角色关系
 func DeleteUserGroup(c *gin.Context) {
 	var req model.UserGroup
 
@@ -203,7 +196,7 @@ func DeleteUserGroup(c *gin.Context) {
 	}
 
 	if req.Name == "" {
-		response.Error(c, "name 字段不能为空")
+		response.Error(c, "name field is empty")
 		return
 	}
 
