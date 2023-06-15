@@ -3,6 +3,7 @@ package middleware
 import (
 	"github.com/gin-gonic/gin"
 	"oasis/app/response"
+	"oasis/db"
 	"oasis/pkg/casbin"
 	"oasis/pkg/utils"
 )
@@ -11,7 +12,7 @@ func CasbinAuth() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		username, err := utils.GetTokenUserName(c)
 		if err != nil {
-			response.Error(c, "解析token错误")
+			response.Error(c, "parsing token error")
 		}
 
 		if username == "admin" {
@@ -19,8 +20,7 @@ func CasbinAuth() gin.HandlerFunc {
 			return
 		}
 
-		// 从数据库中获取角色名或用户组名
-		names, err := utils.GetRolesAndGroupsByUsername(username)
+		names, err := db.GetRolesAndGroupsByUsername(username)
 		if err != nil {
 			response.Error(c, err.Error())
 			return
