@@ -16,6 +16,7 @@ type LoginResponse struct {
 	//ExpirationTime int64      `json:"expiration"` // token到期时间
 }
 
+// Login 登陆帐号与密码验证并且返回token
 func Login(c *gin.Context) {
 	var req request.Login
 	var claims jwt.CustomClaims

@@ -4,7 +4,6 @@
 package model
 
 import (
-	"errors"
 	"oasis/config"
 )
 
@@ -97,6 +96,56 @@ func (group *UserGroup) DeleteUserGroup() error {
 }
 
 // UpdateUserGroupByID 根据用户组ID去更新用户信息
+//func (group *UserGroup) UpdateUserGroupByID(id uint, usernames, rolenames []string) error {
+//	db := config.DB
+//
+//	updates := map[string]interface{}{
+//		"name": group.Name,
+//		"desc": group.Desc,
+//	}
+//
+//	result := db.Model(&UserGroup{}).Where("id = ?", id).Updates(updates)
+//	if result.Error != nil {
+//		return result.Error
+//	}
+//	//
+//	if result.RowsAffected == 0 {
+//		return errors.New("no user group found with the specified ID")
+//	}
+//
+//	var roles []*UserRole
+//	if err := db.Where("name IN ?", rolenames).Find(&roles).Error; err != nil {
+//		return err
+//	}
+//
+//	var users []*User
+//	if err := db.Where("username IN ?", usernames).Find(&users).Error; err != nil {
+//		return err
+//	}
+//
+//	tx := db.Begin()
+//	defer func() {
+//		if r := recover(); r != nil {
+//			tx.Rollback()
+//		}
+//	}()
+//	if err := tx.Error; err != nil {
+//		return err
+//	}
+//
+//	if err := tx.Model(&UserGroup{Model: Model{ID: id}}).Association("Users").Replace(users); err != nil {
+//		tx.Rollback()
+//		return err
+//	}
+//
+//	if err := tx.Model(&UserGroup{Model: Model{ID: id}}).Association("Roles").Replace(roles); err != nil {
+//		tx.Rollback()
+//		return err
+//	}
+//
+//	return tx.Commit().Error
+//}
+
 func (group *UserGroup) UpdateUserGroupByID() error {
 	db := config.DB
 
@@ -109,11 +158,44 @@ func (group *UserGroup) UpdateUserGroupByID() error {
 	if result.Error != nil {
 		return result.Error
 	}
-	if result.RowsAffected == 0 {
-		return errors.New("no user group found with the specified ID")
-	}
 
 	return nil
+}
+
+func (group *UserGroup) UpdateUserGroupAssociations(usernames, rolenames []string) error {
+	db := config.DB
+
+	var users []*User
+	if err := db.Where("username IN ?", usernames).Find(&users).Error; err != nil {
+		return err
+	}
+
+	var roles []*UserRole
+	if err := db.Where("name IN ?", rolenames).Find(&roles).Error; err != nil {
+		return err
+	}
+
+	tx := db.Begin()
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
+	if err := tx.Error; err != nil {
+		return err
+	}
+
+	if err := tx.Model(&UserGroup{Model: Model{ID: group.ID}}).Association("Users").Replace(users); err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	if err := tx.Model(&UserGroup{Model: Model{ID: group.ID}}).Association("Roles").Replace(roles); err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	return tx.Commit().Error
 }
 
 func (group *UserGroup) QueryGroupAndUsersRolesByName() (*UserGroup, error) {

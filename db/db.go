@@ -73,14 +73,14 @@ func Login(username, password string) (*model.User, error) {
 	// 根据用户名查询用户记录
 	err := db.Where("username = ?", username).First(&user).Error
 	if err != nil {
-		log.Error("获取用户错误", zap.Error(err))
+		log.Error("query user error", zap.Error(err))
 		return nil, err
 	}
 
 	// 验证密码
 	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
 	if err != nil {
-		log.Error("密码校验失败", zap.Error(err))
+		log.Error("password verification failed", zap.Error(err))
 		return nil, err
 	}
 

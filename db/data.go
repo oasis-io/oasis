@@ -26,7 +26,7 @@ func InsertData() error {
 func insertUser() error {
 	user := model.User{
 		Username: "admin",
-		Password: "OasisX123",
+		Password: "OasisU123",
 	}
 
 	// 查询用户名是否存在
@@ -172,6 +172,36 @@ func insertMenu() error {
 				Title: "实例列表",
 			},
 			Sort: 401,
+		},
+		{
+			ParentID:  "4",
+			Name:      "Session",
+			Path:      "session",
+			Component: "views/instance/session/index.vue",
+			Meta: model.Meta{
+				Title: "会话管理",
+			},
+			Sort: 402,
+		},
+		{
+			ParentID:  "4",
+			Name:      "Database",
+			Path:      "database",
+			Component: "views/instance/database/index.vue",
+			Meta: model.Meta{
+				Title: "数据库管理",
+			},
+			Sort: 403,
+		},
+		{
+			ParentID:  "4",
+			Name:      "Account",
+			Path:      "account",
+			Component: "views/instance/account/index.vue",
+			Meta: model.Meta{
+				Title: "帐号管理",
+			},
+			Sort: 404,
 		},
 		{
 			ParentID:  "0",

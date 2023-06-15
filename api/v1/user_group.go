@@ -161,6 +161,15 @@ func UpdateUserGroup(c *gin.Context) {
 		return
 	}
 
+	// 查询用户组ID
+	//groupInfo := new(model.UserGroup)
+	//userGroup, err := groupInfo.GetGroupByName(req.Name)
+	//if err != nil {
+	//	log.Error("Failed to query user group id: " + err.Error())
+	//	response.Error(c, "Failed to query user group id")
+	//	return
+	//}
+
 	group := model.UserGroup{
 		Model: model.Model{
 			ID: req.ID,
@@ -169,10 +178,15 @@ func UpdateUserGroup(c *gin.Context) {
 		Desc: req.Desc,
 	}
 
-	err := group.UpdateUserGroupByID()
-	if err != nil {
+	if err := group.UpdateUserGroupByID(); err != nil {
 		log.Error("database update error：" + err.Error())
 		response.Error(c, "database update error")
+		return
+	}
+
+	if err := group.UpdateUserGroupAssociations(req.Users, req.Roles); err != nil {
+		log.Error("database update user group associations error：" + err.Error())
+		response.Error(c, "database update user group associations error")
 		return
 	}
 
