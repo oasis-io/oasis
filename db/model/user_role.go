@@ -80,7 +80,9 @@ func (r *UserRole) CreateRole() error {
 	return nil
 }
 
-func (r *UserRole) DeleteRole() error {
+// DeleteRoleAndAssociations 删除用户
+// 删除关联的用户、角色、用户组、菜单、casbin api相关信息
+func (r *UserRole) DeleteRoleAndAssociations() error {
 	db := config.DB
 
 	// Start a new transaction
@@ -93,8 +95,22 @@ func (r *UserRole) DeleteRole() error {
 		return err
 	}
 
+	// Clear all user group associations
+	err = tx.Model(&r).Association("UserGroups").Clear()
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
 	// Clear all RoleMenuRelation
 	err = tx.Where("role_id = ?", r.ID).Delete(&RoleMenuRelation{}).Error
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	// Delete the casbin rules associated with the role
+	err = tx.Where("v0 = ?", r.Name).Delete(&gormadapter.CasbinRule{}).Error
 	if err != nil {
 		tx.Rollback()
 		return err
@@ -106,13 +122,6 @@ func (r *UserRole) DeleteRole() error {
 		tx.Rollback()
 		return result.Error
 	}
-
-	// Delete the casbin rules associated with the role
-	//err = tx.Where("v0 = ?", r.Name).Delete(&gormadapter.CasbinRule{}).Error
-	//if err != nil {
-	//	tx.Rollback()
-	//	return err
-	//}
 
 	// If everything went well, commit the transaction
 	tx.Commit()

@@ -117,7 +117,7 @@ func DeleteRole(c *gin.Context) {
 		return
 	}
 
-	err = foundRole.DeleteRole()
+	err = foundRole.DeleteRoleAndAssociations()
 	if err != nil {
 		response.Error(c, err.Error())
 		return

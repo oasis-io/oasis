@@ -243,7 +243,7 @@ func DeleteUser(c *gin.Context) {
 		Username: req.Username,
 	}
 
-	err := user.DeleteUser()
+	err := user.DeleteUserByUsername()
 	if err != nil {
 		response.Error(c, err.Error())
 	}

@@ -154,21 +154,24 @@ func (u *User) CreateUser() error {
 	return nil
 }
 
-func (u *User) DeleteUser() (err error) {
+// DeleteUserByUsername 删除用户，并且删除用户关联的角色、用户组关联信息
+func (u *User) DeleteUserByUsername() (err error) {
 
 	db := config.DB
 
-	db.Where("username = ?", u.Username).Preload("Roles").Find(&u)
+	db.Where("username = ?", u.Username).Preload("Roles").Preload("UserGroups").Find(&u)
 
 	if u.ID != 0 {
 		db.Model(&u).Association("Roles").Delete(u.Roles)
+		db.Model(&u).Association("UserGroups").Delete(u.UserGroups)
 	}
 
 	db.Delete(&u)
 	var checkUser User
 	db.Where("username = ?", u.Username).First(&checkUser)
+
 	if checkUser.ID != 0 {
-		return fmt.Errorf("User delete failed!")
+		return fmt.Errorf("user not deleted")
 	}
 
 	return nil
