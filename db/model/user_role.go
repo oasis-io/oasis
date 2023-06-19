@@ -40,6 +40,32 @@ func CreateRoleMenuRelations(roleID uint, menuIDs []uint) error {
 	return nil
 }
 
+func UpdateRoleMenuRelations(roleID uint, menuIDs []uint) error {
+	db := config.DB
+	db = db.Begin()
+
+	// Delete all existing relations
+	if err := db.Where("role_id = ?", roleID).Delete(&RoleMenuRelation{}).Error; err != nil {
+		db.Rollback()
+		return err
+	}
+
+	// Create new relations
+	for _, menuID := range menuIDs {
+		relation := RoleMenuRelation{
+			RoleID: roleID,
+			MenuID: menuID,
+		}
+		if err := db.Create(&relation).Error; err != nil {
+			db.Rollback()
+			return err
+		}
+	}
+
+	db.Commit()
+	return nil
+}
+
 func (r *UserRole) addDefaultRolePermission() error {
 	defaultPermissions := []gormadapter.CasbinRule{
 		// Menu

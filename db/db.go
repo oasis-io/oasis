@@ -242,6 +242,46 @@ func AddApiPermissions(roleName string, apis []model.Api) error {
 	return nil
 }
 
+func UpdateApiPermissions(roleName string, apis []model.Api) error {
+	// 创建一个新的数据库事务
+	tx := config.DB.Begin()
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
+
+	// 先删除已有的权限
+	if err := tx.Where("v0 = ?", strings.ToUpper(roleName)).Delete(&gormadapter.CasbinRule{}).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	// 然后添加新的权限
+	var permissions []gormadapter.CasbinRule
+
+	for _, api := range apis {
+		if api.Path != "" && api.Method != "" {
+			permission := gormadapter.CasbinRule{
+				Ptype: "p",
+				V0:    strings.ToUpper(roleName),
+				V1:    api.Path,
+				V2:    api.Method,
+			}
+			permissions = append(permissions, permission)
+		}
+	}
+
+	for _, permission := range permissions {
+		if err := tx.Create(&permission).Error; err != nil {
+			tx.Rollback()
+			return err
+		}
+	}
+
+	return tx.Commit().Error // 提交事务
+}
+
 func GetApisByRole(roleName string) ([]model.Api, error) {
 	// Query Role ID
 	var role model.UserRole

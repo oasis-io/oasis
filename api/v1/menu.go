@@ -9,14 +9,11 @@ import (
 	"oasis/db/model"
 	"oasis/pkg/log"
 	"oasis/pkg/utils"
+	"sort"
 )
 
 type MenuResponse struct {
 	Menus []model.Menu `json:"menus"`
-}
-
-type MenuApiResponse struct {
-	Api []model.Api `json:"apis"`
 }
 
 // GetMenuTree 返回用户的所有菜单栏
@@ -93,6 +90,7 @@ func MenuPermissions(c *gin.Context) {
 		return
 	}
 
+	// 获取角色信息
 	role, err := (&model.UserRole{}).GetRoleName(req.Name)
 	if err != nil {
 		response.Error(c, fmt.Sprintf("Unable to get role ID for name: %s", req.Name))
@@ -101,12 +99,19 @@ func MenuPermissions(c *gin.Context) {
 
 	menuIDs := make([]uint, len(req.Menus))
 	for i, menu := range req.Menus {
-		menuIDs[i] = menu.ID
+		menuIDs[i] = menu
 	}
 
+	// 对menuIDs进行排序
+	sort.Slice(menuIDs, func(i, j int) bool {
+		return menuIDs[i] < menuIDs[j]
+	})
+
+	log.Info(fmt.Sprintf("menuIDs: %v", menuIDs))
+
 	roleID := role.ID
-	if err := model.CreateRoleMenuRelations(roleID, menuIDs); err != nil {
-		response.Error(c, fmt.Sprintf("Unable to create role-menu relations: %v", err))
+	if err := model.UpdateRoleMenuRelations(roleID, menuIDs); err != nil {
+		response.Error(c, fmt.Sprintf("Unable to update role-menu relations: %v", err))
 		return
 	}
 
@@ -123,7 +128,7 @@ func MenuApiPermissions(c *gin.Context) {
 		return
 	}
 
-	err := db.AddApiPermissions(req.Name, req.Apis)
+	err := db.UpdateApiPermissions(req.Name, req.Apis)
 	if err != nil {
 		response.Error(c, err.Error())
 		return

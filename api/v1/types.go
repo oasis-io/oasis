@@ -48,9 +48,9 @@ type GroupRequest struct {
 }
 
 type MenuRequest struct {
-	Name  string       `json:"name"`
-	Apis  []model.Api  `json:"apis"`
-	Menus []model.Menu `json:"menus"`
+	Name  string      `json:"name"`
+	Apis  []model.Api `json:"apis"`
+	Menus []uint      `json:"menus"` // 菜单ID
 }
 
 type RoleRequest struct {

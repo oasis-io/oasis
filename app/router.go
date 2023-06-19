@@ -55,7 +55,7 @@ func HttpRequests() {
 		v1Router.POST("/menu", v1.GetMenuTree)
 		v1Router.POST("/menu/getBaseMenuTree", v1.GetBaseMenuTree)
 		v1Router.POST("/menu/permissions", v1.MenuPermissions)
-		v1Router.POST("/menu/api", v1.MenuApiPermissions)
+		v1Router.POST("/menu/api/permissions", v1.MenuApiPermissions)
 		v1Router.POST("/menu/getBaseMenuApi", v1.GetBaseMenuApi)
 		v1Router.POST("/menu/getMenuAuthorized", v1.GetMenuAuthorized)
 		v1Router.POST("/menu/getMenuApiAuthorized", v1.GetMenuApiAuthorized)

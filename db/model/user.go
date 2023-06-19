@@ -65,9 +65,11 @@ func (u *User) UpdateUser() error {
 	if result.Error != nil {
 		return result.Error
 	}
-	if result.RowsAffected == 0 {
-		return errors.New("user not found")
-	}
+
+	//if result.RowsAffected == 0 {
+	//	return errors.New("user not found")
+	//}
+
 	return nil
 }
 
