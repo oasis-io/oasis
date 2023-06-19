@@ -8,40 +8,45 @@ import (
 )
 
 const (
-	VERSION         = "0.1.0" // Oasis version
+	VERSION              = "0.1.0"     // Oasis version
+	DefaultAdminUsername = "admin"     // 超级管理员用户名
+	DefaultAdminPassword = "Oasis2022" // 超级管理员密码
+
 	SetMaxOpenConns = 5
 	SetMaxIdleConns = 3
+
+	ServerBind = "server.bind"
 )
 
 var (
 	DB *gorm.DB
 )
 
-type Config struct {
+type OasisConfig struct {
 	Server Server
 	MySQL  MySQLConfig
 }
 
 type Server struct {
-	Port          string
+	Port          string `toml:"port"`
 	LogError      string `toml:"error_log"`
 	LogAccess     string `toml:"access_log"`
 	LogAccessPath string `toml:"access_log_path"`
-	Bind          string
+	Bind          string `toml:"bind"`
 }
 
 type MySQLConfig struct {
-	Host        string
-	Port        string
-	User        string
-	Password    string
-	Database    string
+	Host        string `toml:"host"`
+	Port        string `toml:"port"`
+	User        string `toml:"user"`
+	Password    string `toml:"password"`
+	Database    string `toml:"database"`
 	MaxOpenConn int
 	MaxIdleConn int
 }
 
-func NewConfig() *Config {
-	return &Config{
+func NewOasisConfig() *OasisConfig {
+	return &OasisConfig{
 		Server: Server{
 			Port:          viper.GetString("server.port"),
 			LogError:      viper.GetString("server.error_log"),

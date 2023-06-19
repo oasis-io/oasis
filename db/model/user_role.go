@@ -60,6 +60,7 @@ func (r *UserRole) addDefaultRolePermission() error {
 	return nil
 }
 
+// CreateRole 创建单个角色
 func (r *UserRole) CreateRole() error {
 	db := config.DB
 
@@ -71,11 +72,27 @@ func (r *UserRole) CreateRole() error {
 		return result.Error
 	}
 
-	// Add default permission for the new role.
-	//err := r.addDefaultRolePermission()
-	//if err != nil {
-	//	return err
-	//}
+	return nil
+}
+
+// CreateMultipleRoles 批量创建角色
+func (r *UserRole) CreateMultipleRoles(roles []UserRole) error {
+	db := config.DB
+
+	// 角色名称统一大写
+	r.Name = strings.ToUpper(r.Name)
+
+	tx := db.Begin()
+
+	for i := range roles {
+		result := tx.Create(&roles[i])
+		if result.Error != nil {
+			tx.Rollback()
+			return result.Error
+		}
+	}
+
+	tx.Commit()
 
 	return nil
 }

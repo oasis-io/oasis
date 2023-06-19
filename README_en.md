@@ -26,15 +26,15 @@ bash scripts/build.sh
 ### Install
 
 ```bash
+# Optional, just specify the database name in the configuration file
 CREATE DATABASE IF NOT EXISTS oasis default character set utf8mb4;
 
-
+# Create users and permissions
 CREATE USER  'oasis'@'%' IDENTIFIED BY 'eQWJjZGV1A(MjAxOQo';
 GRANT ALL PRIVILEGES ON oasis.* TO 'oasis'@'%' ; 
 FLUSH PRIVILEGES;
 
-
-Modify the account and password of the configuration file
+# Modify the account and password of the configuration file
 cat oasis.toml
 [mysql]
 user = "oasis"
@@ -43,8 +43,7 @@ port = "3306"
 password = "eQWJjZGV1A(MjAxOQo"
 database = "oasis"
 
-
-Start
+# Start
 nohup ./oasis -c oasis.toml &
 ```
 

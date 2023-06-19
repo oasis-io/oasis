@@ -57,17 +57,8 @@ func (u *User) GetUserByUsername() (*User, error) {
 func (u *User) UpdateUser() error {
 	db := config.DB
 	updates := map[string]interface{}{
-		"email":    u.Email,
-		"phone":    u.Phone,
-		"password": u.Password,
-	}
-
-	if u.Password != "" {
-		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)
-		if err != nil {
-			return err
-		}
-		updates["password"] = string(hashedPassword)
+		"email": u.Email,
+		"phone": u.Phone,
 	}
 
 	result := db.Model(&User{}).Where("username = ?", u.Username).Updates(updates)

@@ -189,13 +189,14 @@ func UpdateUser(c *gin.Context) {
 		Username: req.Username,
 		Email:    req.Email,
 		Phone:    req.Phone,
-		Password: req.Password,
 	}
 
-	if err := user.UpdateUser(); err != nil {
-		log.Error("database update error：" + err.Error())
-		response.Error(c, "database update error")
-		return
+	if req.Email != "" || req.Phone != "" {
+		if err := user.UpdateUser(); err != nil {
+			log.Error("database update error：" + err.Error())
+			response.Error(c, "database update error")
+			return
+		}
 	}
 
 	if err := user.UpdateRoles(req.Roles); err != nil {

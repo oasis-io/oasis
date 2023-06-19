@@ -27,15 +27,13 @@ bash scripts/build.sh
 ### 部署
 
 ```bash
-创建数据库
+创建数据库 #可选，配置文件指定库名后会自动创建数据库
 CREATE DATABASE IF NOT EXISTS oasis default character set utf8mb4;
-
 
 创建用户与权限
 CREATE USER  'oasis'@'%' IDENTIFIED BY 'eQWJjZGV1A(MjAxOQo';
 GRANT ALL PRIVILEGES ON oasis.* TO 'oasis'@'%' ; 
 FLUSH PRIVILEGES;
-
 
 修改配置文件的帐号与密码
 cat oasis.toml
@@ -45,7 +43,6 @@ host = "127.0.0.1"
 port = "3306"
 password = "eQWJjZGV1A(MjAxOQo"
 database = "oasis"
-
 
 启动
 nohup ./oasis -c oasis.toml &

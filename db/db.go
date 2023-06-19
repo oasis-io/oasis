@@ -14,17 +14,44 @@ import (
 	"strings"
 )
 
+func initializeDatabase(db *gorm.DB) error {
+	log.Info("Initializing Database")
+
+	// Migrate tables
+	log.Info("Migrating tables")
+	AutoMigrate()
+
+	// Initialize Casbin
+	//log.Info("Initializing Casbin")
+	//casbin.InitCasbin()
+
+	// Initialize Data
+	if err := InsertData(); err != nil {
+		log.Error("Failed to initialize Casbin: " + err.Error())
+		return err
+	}
+
+	return nil
+}
+
 func OpenOasis() (*gorm.DB, error) {
-	return openOasis()
+	db, err := openOasis()
+	if err != nil {
+		return nil, err
+	}
+
+	// 初始化数据
+	//initializeDatabase(db)
+
+	return db, nil
 }
 
 func openOasis() (*gorm.DB, error) {
-	config := config.NewConfig()
-	user := config.MySQL.User
-	password := config.MySQL.Password
-	host := config.MySQL.Host
-	port := config.MySQL.Port
-	database := config.MySQL.Database
+	user := config.NewOasisConfig().MySQL.User
+	password := config.NewOasisConfig().MySQL.Password
+	host := config.NewOasisConfig().MySQL.Host
+	port := config.NewOasisConfig().MySQL.Port
+	database := config.NewOasisConfig().MySQL.Database
 
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local", user, password, host, port, database)
 
@@ -44,8 +71,8 @@ func openOasis() (*gorm.DB, error) {
 		return nil, err
 	}
 
-	maxOpen := config.MySQL.MaxOpenConn
-	maxIdle := config.MySQL.MaxIdleConn
+	maxOpen := config.NewOasisConfig().MySQL.MaxOpenConn
+	maxIdle := config.NewOasisConfig().MySQL.MaxIdleConn
 	DB.SetMaxOpenConns(maxOpen)
 	DB.SetMaxIdleConns(maxIdle)
 
@@ -275,4 +302,46 @@ func GetRolesAndGroupsByUsername(username string) ([]string, error) {
 	}
 
 	return rolesAndGroups, nil
+}
+
+type ApiItem struct {
+	model.Api
+	OnlyId string `json:"onlyId"` // 额外字段，前端要用
+}
+
+type ApiGroup struct {
+	ID       string    `json:"ID"`
+	Desc     string    `json:"desc"`
+	Children []ApiItem `json:"children"`
+}
+
+func BuildApiTree(apis []model.Api) []ApiGroup {
+	groupMap := make(map[string][]ApiItem)
+
+	for _, api := range apis {
+		apiItem := ApiItem{
+			Api:    api,
+			OnlyId: "p:" + api.Path + "m:" + api.Method,
+		}
+		groupMap[api.Group] = append(groupMap[api.Group], apiItem)
+	}
+
+	// 对groupMap中的每一个组进行排序
+	for _, items := range groupMap {
+		sort.Slice(items, func(i, j int) bool {
+			return items[i].ID < items[j].ID
+		})
+	}
+
+	var apiTree []ApiGroup
+	for group, items := range groupMap {
+		apiGroup := ApiGroup{
+			ID:       group,
+			Desc:     group + "组",
+			Children: items,
+		}
+		apiTree = append(apiTree, apiGroup)
+	}
+
+	return apiTree
 }

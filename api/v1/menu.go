@@ -141,9 +141,9 @@ func GetBaseMenuApi(c *gin.Context) {
 		return
 	}
 
-	response.SendSuccessData(c, "获取菜单API成功", MenuApiResponse{
-		Api: allApi,
-	})
+	apiTree := db.BuildApiTree(allApi)
+
+	response.SendSuccessData(c, "获取菜单API成功", apiTree)
 }
 
 func GetMenuAuthorized(c *gin.Context) {
@@ -182,7 +182,7 @@ func GetMenuApiAuthorized(c *gin.Context) {
 		return
 	}
 
-	response.SendSuccessData(c, "获取菜单API成功", MenuApiResponse{
-		Api: apis,
-	})
+	apiTree := db.BuildApiTree(apis)
+
+	response.SendSuccessData(c, "获取菜单API成功", apiTree)
 }

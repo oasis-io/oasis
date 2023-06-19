@@ -15,10 +15,10 @@ import (
 func HttpRequests() {
 	//gin.SetMode(gin.ReleaseMode)
 
-	accessLog := config.NewConfig().Server.LogAccess
+	accessLog := config.NewOasisConfig().Server.LogAccess
 	if accessLog == "on" {
 		//gin.SetMode(gin.DebugMode)
-		logPath := config.NewConfig().Server.LogAccessPath
+		logPath := config.NewOasisConfig().Server.LogAccessPath
 		f, _ := os.Create(logPath)
 		// 将访问log写入文件
 		//gin.DefaultWriter = io.MultiWriter(f)
@@ -97,10 +97,10 @@ func HttpRequests() {
 		v1Router.POST("/user/group/list", v1.GetUserGroupList)
 	}
 
-	bind := config.NewConfig().Server.Bind
-	port := config.NewConfig().Server.Port
+	bind := config.NewOasisConfig().Server.Bind
+	port := config.NewOasisConfig().Server.Port
 	address := bind + ":" + port
 
-	log.Info("Start HTTP listener", zap.String("address", address))
+	log.Info("Start HTTP Listener", zap.String("address", address))
 	r.Run(address)
 }

@@ -1,32 +1,53 @@
 package db
 
 import (
+	"oasis/config"
 	"oasis/db/model"
+	"oasis/pkg/log"
 )
 
 func InsertData() error {
-	errOne := insertUser()
-	if errOne != nil {
-		return errOne
+	if err := CreateAdminUser(); err != nil {
+		return err
 	}
 
-	errTwo := insertApi()
-	if errTwo != nil {
-		return errTwo
+	if err := insertApi(); err != nil {
+		return err
 	}
 
-	err := insertMenu()
-	if err != nil {
+	if err := insertMenu(); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func insertUser() error {
+func CreateDefaultRoles() error {
+
+	data := []model.UserRole{
+		{
+			Name: "CONNECT",
+			Desc: "允许用户连接",
+		},
+		{
+			Name: "DBA",
+			Desc: "拥有全部特权，是系统最高权限",
+		},
+	}
+
+	role := model.UserRole{}
+
+	err := role.CreateMultipleRoles(data)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func CreateAdminUser() error {
 	user := model.User{
-		Username: "admin",
-		Password: "OasisU123",
+		Username: config.DefaultAdminUsername,
+		Password: config.DefaultAdminPassword,
 	}
 
 	// 查询用户名是否存在
@@ -39,6 +60,7 @@ func insertUser() error {
 		if err != nil {
 			return err
 		}
+		log.Info("admin administrator user does not exist, initialize data.")
 	}
 
 	return nil
@@ -52,6 +74,12 @@ func insertApi() error {
 			Group:  "基础API",
 			Desc:   "查询菜单",
 			Path:   "/v1/menu",
+			Method: "POST",
+		},
+		{
+			Group:  "首页",
+			Desc:   "首页",
+			Path:   "/v1/home",
 			Method: "POST",
 		},
 		// 用户管理

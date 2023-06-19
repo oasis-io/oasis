@@ -64,7 +64,7 @@ func InitCasbin() {
 	db := config.DB
 	_, err := gormadapter.NewAdapterByDB(db)
 	if err != nil {
-		log.Error("Casbin 初始化错误：" + err.Error())
+		log.Error("Casbin initialization error：" + err.Error())
 		return
 	}
 }
