@@ -191,10 +191,16 @@ func (u *User) GetUserList(pageSize, currentPage int) ([]User, int64, error) {
 	limit := pageSize
 	offset := pageSize * (currentPage - 1)
 
-	db.Preload("Roles").Limit(limit).Offset(offset).Find(&userList)
+	result := db.Preload("Roles").Limit(limit).Offset(offset).Find(&userList)
+	if result.Error != nil {
+		return nil, 0, result.Error
+	}
 
 	// 获取总记录数
-	db.Model(&User{}).Count(&count)
+	countResult := db.Model(&User{}).Count(&count)
+	if result.Error != nil {
+		return nil, 0, countResult.Error
+	}
 
 	return userList, count, nil
 }

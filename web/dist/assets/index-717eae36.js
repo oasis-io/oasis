@@ -1,0 +1,1 @@
+import{_ as a,o as s,t,b as o,w as _,T as c,R as d,p as n,i as p,j as r}from"./index-6dee63ee.js";const i={},f=e=>(n("data-v-fd9775b4"),e=e(),p(),e),l=f(()=>r("h1",null,"会话管理",-1));function u(e,x){return s(),t(d,null,[o(c,{name:"fade"},{default:_(()=>[l]),_:1})],1024)}const v=a(i,[["render",u],["__scopeId","data-v-fd9775b4"]]);export{v as default};

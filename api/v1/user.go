@@ -149,14 +149,6 @@ func CreateUser(c *gin.Context) {
 			}
 			roles = append(roles, role)
 		}
-	} else {
-		// 默认添加CONNECT角色
-		defaultRole, err := new(model.UserRole).GetRoleName("CONNECT")
-		if err != nil {
-			response.Error(c, "Default role CONNECT not found")
-			return
-		}
-		roles = append(roles, defaultRole)
 	}
 
 	user := model.User{

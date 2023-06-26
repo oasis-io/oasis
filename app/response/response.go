@@ -6,9 +6,10 @@ import (
 )
 
 const (
-	SUCCESS      = 1000
-	ERROR        = 1001
-	TokenExpired = 1002
+	SUCCESS          = 1000
+	ERROR            = 1001
+	TokenExpired     = 1002
+	PermissionDenied = 1003 // permission denied
 )
 
 type Response struct {

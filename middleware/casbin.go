@@ -27,7 +27,7 @@ func CasbinAuth() gin.HandlerFunc {
 		}
 
 		if len(names) == 0 {
-			response.Error(c, "no role found!")
+			response.Error(c, "permission denied, please add role!")
 			c.Abort()
 			return
 		}

@@ -20,12 +20,13 @@ func GetUserGroupList(c *gin.Context) {
 	group := model.UserGroup{}
 	groupList, count, err := group.GetGroupList(req.PageSize, req.CurrentPage)
 	if err != nil {
+		log.Error(err.Error())
 		response.Error(c, err.Error())
 		return
 	}
 
 	if len(groupList) <= 0 {
-		response.Error(c, "no user group")
+		response.Error(c, "Failed to create user group")
 		return
 	}
 
@@ -63,6 +64,7 @@ func GetUserGroup(c *gin.Context) {
 
 	info, err := group.QueryGroupAndUsersRolesByName()
 	if err != nil {
+		log.Error(err.Error())
 		response.Error(c, err.Error())
 		return
 	}
@@ -210,6 +212,7 @@ func DeleteUserGroup(c *gin.Context) {
 
 	err = foundGroup.DeleteUserGroup()
 	if err != nil {
+		log.Error(err.Error())
 		response.Error(c, err.Error())
 		return
 	}

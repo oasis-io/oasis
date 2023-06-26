@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"oasis/app/response"
+	"oasis/config"
 	"oasis/db"
 	"oasis/db/model"
 	"oasis/pkg/log"
@@ -21,19 +22,20 @@ type MenuResponse struct {
 func GetMenuTree(c *gin.Context) {
 	username, err := utils.GetTokenUserName(c)
 	if err != nil {
-		response.Error(c, "解析token错误")
+		log.Error("parsing token error", zap.Error(err))
+		response.Error(c, "Parsing token error")
 		return
 	}
 
 	allMenus, err := db.GetMenuTree()
 	if err != nil {
-		log.Error("获取菜单失败!", zap.Error(err))
-		response.Error(c, err.Error())
+		log.Error("Failed to get menu", zap.Error(err))
+		response.Error(c, "Failed to get menu")
 		return
 	}
 
-	if username == "admin" {
-		response.SendSuccessData(c, "获取菜单成功", MenuResponse{
+	if username == config.DefaultAdminUsername {
+		response.SendSuccessData(c, "Get the menu successfully", MenuResponse{
 			Menus: allMenus,
 		})
 		return
@@ -44,7 +46,8 @@ func GetMenuTree(c *gin.Context) {
 	}
 	foundUser, err := user.QueryUserAndRolesByUsername()
 	if err != nil {
-		response.Error(c, err.Error())
+		log.Error(err.Error())
+		response.Error(c, "Failed to build menu, please check if permissions are added!")
 		return
 	}
 
@@ -54,14 +57,14 @@ func GetMenuTree(c *gin.Context) {
 		// 查询角色关联的菜单信息
 		menus, err = db.GetMenuTreeMapForRole(role.Name)
 		if err != nil {
-			log.Error("获取菜单失败!", zap.Error(err))
-			response.Error(c, err.Error())
+			log.Error("Failed to get menu", zap.Error(err))
+			response.Error(c, "Failed to build menu, please check if permissions are added!")
 			return
 		}
 
 	}
 
-	response.SendSuccessData(c, "获取菜单成功", MenuResponse{
+	response.SendSuccessData(c, "Get the menu successfully", MenuResponse{
 		Menus: menus,
 	})
 }

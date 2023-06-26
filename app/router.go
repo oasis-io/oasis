@@ -30,7 +30,7 @@ func HttpRequests() {
 	r := gin.Default()
 	r.Use(middleware.Cors())
 
-	// 将前端build后的dist文件复制到web文件夹
+	// 将前端build后的dist文件夹复制到web文件夹
 	// gin框架去哪里找static静态文件与index.html模板文件
 	//r.Static("/assets", "./web/dist/assets")
 	//r.LoadHTMLGlob("web/dist/*.html")
@@ -60,16 +60,19 @@ func HttpRequests() {
 		v1Router.POST("/menu/getMenuAuthorized", v1.GetMenuAuthorized)
 		v1Router.POST("/menu/getMenuApiAuthorized", v1.GetMenuApiAuthorized)
 
-		// SQL Query
-		v1Router.POST("/sql/query", v1.GetSqlQueryData)
+		// SQL
+		v1Router.POST("/sql/query", v1.QueryData)
 
 		// Instance
 		v1Router.POST("/instance", v1.GetInstance)
 		v1Router.DELETE("/instance", v1.DeleteInstance)
 		v1Router.PATCH("/instance", v1.UpdateInstance)
+		v1Router.PATCH("/instance/password", v1.UpdateInstancePassword)
 		v1Router.POST("/instance/add", v1.CreateInstance)
 		v1Router.POST("/instance/list", v1.GetInstanceList)
-		v1Router.POST("/instance/ping", v1.CheckInstanceConn)
+		v1Router.POST("/instance/ping", v1.PingInstance)
+		v1Router.GET("/instance/name", v1.GetInstanceName)
+		v1Router.POST("/instance/database", v1.GetInstanceDatabase)
 
 		// User List
 		v1Router.POST("/user", v1.GetUser)

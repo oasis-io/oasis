@@ -5,14 +5,69 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="771fb103-1b86-47b3-932e-a6713078e0ea" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/db/instance.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/db/sql.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/main.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/map.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/utils/encryption.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/Apis-3e5eaf48.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/Apis-701e4bb5.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/Menus-3388d1a2.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/Menus-f2b38b7b.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/base-34dba8e3.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/el-button-2cb60ae5.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/el-checkbox-e117c7b0.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/el-form-item-4ed993c7.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/el-icon-6f116484.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/el-input-0e5f39e7.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/el-pagination-33e32fc7.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/el-scrollbar-4dbad1cd.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/el-select-2f3d93b2.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/el-table-column-2ee425e0.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/el-tree-ffd66896.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/index-0f092566.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/index-0f28f592.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/index-23555adc.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/index-258387ae.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/index-32969cc6.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/index-4d6a7935.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/index-55c81101.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/index-5da22cff.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/index-6dee63ee.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/index-717eae36.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/index-7ef59cb4.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/index-9beeb973.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/index-a83c8b39.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/index-ac08f337.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/index-b94082b6.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/index-c4ef00cc.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/index-cc4c5c89.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/index-cf65651c.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/index-eaac3998.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/index-ecb4e2f1.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/index-f432bb5e.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/index-f462df9e.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/index-fb34d2e3.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/assets/login-6e0abc61.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/dist/vite.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/v1/instance.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/v1/instance.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/v1/menu.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/v1/menu.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/v1/types.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/v1/types.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/v1/sql.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/v1/sql.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/v1/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/v1/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/v1/user_group.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/v1/user_group.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/response/response.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/response/response.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/router.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/oasis/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/oasis/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/data.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/data.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db/db.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/db.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/model/instance.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/model/instance.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db/model/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/model/user.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/model/user_role.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/model/user_role.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/middleware/casbin.go" beforeDir="false" afterPath="$PROJECT_DIR$/middleware/casbin.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,7 +109,7 @@
     "git-widget-placeholder": "main",
     "go.import.settings.migrated": "true",
     "go.sdk.automatically.set": "true",
-    "last_opened_file_path": "/home/oasis/projects/github.com/zhangshaodong/sqle",
+    "last_opened_file_path": "/home/oasis/projects/github.com/zhangshaodong/go-demo",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "nodejs_package_manager_path": "npm"

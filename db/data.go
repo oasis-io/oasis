@@ -150,27 +150,6 @@ func insertMenu() error {
 		},
 		{
 			ParentID:  "0",
-			Name:      "K8S",
-			Path:      "k8s",
-			Component: "views/k8s/index.vue",
-			Meta: model.Meta{
-				Title: "K8S平台",
-				Icon:  "ElementPlus",
-			},
-			Sort: 2,
-		},
-		{
-			ParentID:  "2",
-			Name:      "Application",
-			Path:      "app",
-			Component: "views/k8s/app/index.vue",
-			Meta: model.Meta{
-				Title: "应用部署",
-			},
-			Sort: 201,
-		},
-		{
-			ParentID:  "0",
 			Name:      "SQLQuery",
 			Path:      "sql",
 			Component: "views/sql/index.vue",

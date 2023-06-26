@@ -14,44 +14,32 @@ import (
 	"strings"
 )
 
-func initializeDatabase(db *gorm.DB) error {
-	log.Info("Initializing Database")
+type Database interface {
+	CreateInstance(ins *model.Instance) error
+	UpdateInstance(ins *model.Instance) error
+	DeleteInstance(ins *model.Instance) error
+	PingInstance() error
+}
 
-	// Migrate tables
-	log.Info("Migrating tables")
-	AutoMigrate()
-
-	// Initialize Casbin
-	//log.Info("Initializing Casbin")
-	//casbin.InitCasbin()
-
-	// Initialize Data
-	if err := InsertData(); err != nil {
-		log.Error("Failed to initialize Casbin: " + err.Error())
-		return err
-	}
-
-	return nil
+type MySQL struct {
 }
 
 func OpenOasis() (*gorm.DB, error) {
-	db, err := openOasis()
-	if err != nil {
-		return nil, err
-	}
-
-	// 初始化数据
-	//initializeDatabase(db)
-
-	return db, nil
-}
-
-func openOasis() (*gorm.DB, error) {
 	user := config.NewOasisConfig().MySQL.User
 	password := config.NewOasisConfig().MySQL.Password
 	host := config.NewOasisConfig().MySQL.Host
 	port := config.NewOasisConfig().MySQL.Port
 	database := config.NewOasisConfig().MySQL.Database
+
+	db, err := openOasis(user, password, host, port, database)
+	if err != nil {
+		return nil, err
+	}
+
+	return db, nil
+}
+
+func openOasis(user, password, host, port, database string) (*gorm.DB, error) {
 
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local", user, password, host, port, database)
 
@@ -81,14 +69,6 @@ func openOasis() (*gorm.DB, error) {
 	}
 
 	return db, err
-}
-
-func OpenInstance() (*gorm.DB, error) {
-	return openInstance()
-}
-
-func openInstance() (*gorm.DB, error) {
-	return nil, nil
 }
 
 // Login 登陆验证
@@ -213,33 +193,6 @@ func GetMenuTreeMapForRole(roleName string) ([]model.Menu, error) {
 	}
 
 	return buildMenuTreeWithMap(menuMap, "0"), nil
-}
-
-func AddApiPermissions(roleName string, apis []model.Api) error {
-	var permissions []gormadapter.CasbinRule
-
-	for _, api := range apis {
-		if api.Path != "" && api.Method != "" {
-			permission := gormadapter.CasbinRule{
-				Ptype: "p",
-				V0:    strings.ToUpper(roleName),
-				V1:    api.Path,
-				V2:    api.Method,
-			}
-			permissions = append(permissions, permission)
-		}
-	}
-
-	db := config.DB
-
-	for _, permission := range permissions {
-		result := db.Create(&permission)
-		if result.Error != nil {
-			return result.Error
-		}
-	}
-
-	return nil
 }
 
 func UpdateApiPermissions(roleName string, apis []model.Api) error {
